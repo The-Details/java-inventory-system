@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -11,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -21,6 +21,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.function.Predicate;
+
 
 import static javafx.geometry.HPos.CENTER;
 import static javafx.geometry.HPos.LEFT;
@@ -121,9 +123,7 @@ public class InventorySystem extends Application {
 
     //Events Methods &  Related Fields
     public static Scene toastyScene;
-    public static int newPartId = 0;
-    public static int newProductId = 0;
-    public static String itemTypeText;
+    public static Stage toastyStage;
 
     public static String newPartName;
     public static double newPartPrice;
@@ -155,8 +155,8 @@ public class InventorySystem extends Application {
                 return newPartStock;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Part Inventory Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -174,8 +174,8 @@ public class InventorySystem extends Application {
                 return newPartMin;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Part Min Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -193,8 +193,8 @@ public class InventorySystem extends Application {
                 return newPartMax;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Part Max Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -206,33 +206,33 @@ public class InventorySystem extends Application {
                 return 0;
             }
         }
-            public static double newPartPrice(TextField price){
-                try{
-                    newPartPrice = Double.parseDouble(price.getText());
-                    return newPartPrice;
-                }catch(NumberFormatException e){
-                    GridPane error = new GridPane();
-                    Text errorInfo = new Text("Error: Input Value must be a decimal");
-                    errorInfo.setFont(new Font(50));
-                    error.getChildren().add(errorInfo);
-                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
-                    Stage popUp = new Stage();
-                    toastyScene = new Scene(error);
-                    popUp.setTitle("Error");
-                    popUp.setScene(toastyScene);
-                    popUp.sizeToScene();
-                    popUp.show();
-                    return 0;
-                }
+        public static double newPartPrice(TextField price){
+            try{
+                newPartPrice = Double.parseDouble(price.getText());
+                return newPartPrice;
+            }catch(NumberFormatException e){
+                GridPane error = new GridPane();
+                Text errorInfo = new Text("Part Price Error: Input Value must be a decimal");
+                errorInfo.setFont(new Font(20));
+                error.getChildren().add(errorInfo);
+                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                Stage popUp = new Stage();
+                toastyScene = new Scene(error);
+                popUp.setTitle("Error");
+                popUp.setScene(toastyScene);
+                popUp.sizeToScene();
+                popUp.show();
+                return 0;
             }
-            public static String newPartName(TextField name){
+        }
+        public static String newPartName(TextField name){
                 try{
                     newPartName = name.getText();
                     return newPartName;
                 }catch(NumberFormatException e){
                     GridPane error = new GridPane();
-                    Text errorInfo = new Text("Error: Input Value must be a alpha-numeric characters");
-                    errorInfo.setFont(new Font(50));
+                    Text errorInfo = new Text("Part Name Error: Input Value must be a alpha-numeric characters");
+                    errorInfo.setFont(new Font(20));
                     error.getChildren().add(errorInfo);
                     GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                     Stage popUp = new Stage();
@@ -250,8 +250,8 @@ public class InventorySystem extends Application {
                 return newProductStock;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Inventory Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -269,8 +269,8 @@ public class InventorySystem extends Application {
                 return newProductMin;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Min Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -288,8 +288,8 @@ public class InventorySystem extends Application {
                 return newProductMax;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Max Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -307,8 +307,8 @@ public class InventorySystem extends Application {
                 return newProductPrice;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a decimal");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Price Error: Input Value must be a decimal");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -326,8 +326,8 @@ public class InventorySystem extends Application {
                 return newProductName;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Name Error: Input Value must be a alpha-numeric characters");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -347,8 +347,8 @@ public class InventorySystem extends Application {
                 return modifyPartStock;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Part Inventory Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -366,8 +366,8 @@ public class InventorySystem extends Application {
                 return modifyPartMin;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Part Min Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -385,8 +385,8 @@ public class InventorySystem extends Application {
                 return modifyPartMax;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Part Max Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -404,8 +404,8 @@ public class InventorySystem extends Application {
                 return modifyPartPrice;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a decimal");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Price Error: Input Value must be a decimal");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -423,8 +423,8 @@ public class InventorySystem extends Application {
                 return modifyPartName;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a alpha-numeric characters");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Name Error: Input Value must be a alpha-numeric characters");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -442,8 +442,8 @@ public class InventorySystem extends Application {
                 return modifyProductStock;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Inventory Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -461,8 +461,8 @@ public class InventorySystem extends Application {
                 return modifyProductMin;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Min Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -480,8 +480,8 @@ public class InventorySystem extends Application {
                 return modifyProductMax;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a whole number");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Product Max Error: Input Value must be a whole number");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -499,8 +499,8 @@ public class InventorySystem extends Application {
                 return modifyProductPrice;
             }catch(NumberFormatException e){
                 GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a decimal");
-                errorInfo.setFont(new Font(50));
+                Text errorInfo = new Text("Price Error: Input Value must be a decimal");
+                errorInfo.setFont(new Font(20));
                 error.getChildren().add(errorInfo);
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
@@ -517,37 +517,15 @@ public class InventorySystem extends Application {
                 modifyProductName = name.getText();
                 return modifyProductName;
             }catch(NumberFormatException e){
-                GridPane error = new GridPane();
-                Text errorInfo = new Text("Error: Input Value must be a alpha-numeric characters");
-                errorInfo.setFont(new Font(50));
-                error.getChildren().add(errorInfo);
-                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
-                Stage popUp = new Stage();
-                toastyScene = new Scene(error);
-                popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
-                popUp.sizeToScene();
-                popUp.show();
                 return null;
             }
         }
 
 
         //Scene Change
-        public static void sceneChanger(GridPane theOpenScene, Button theOpenButton,Button theCloseButton, String windowTitle){
-            theOpenButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Stage popUp = new Stage();
-                toastyScene = new Scene(theOpenScene);
-                popUp.setTitle(windowTitle);
-                popUp.setScene(toastyScene);
-                popUp.sizeToScene();
-                popUp.show();
-            });
-            theCloseButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Node source = (Node) event.getSource();
-                Stage popUp = (Stage) source.getScene().getWindow();
-                popUp.close();
-            });
+        public static void sceneChanger(GridPane theNewScene, GridPane theMainScene,Button theOpenButton,Button theCloseButton){
+            theOpenButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> toastyScene.setRoot(theNewScene));
+            theCloseButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> toastyScene.setRoot(theMainScene));
         }
 
         //Close Program
@@ -560,50 +538,196 @@ public class InventorySystem extends Application {
         }
 
         //Add Part TextField Use
-        public static void saveNewPart(ToggleGroup itemType, TextField name, TextField price,
+        public static void saveNewPart(ToggleGroup itemType, Button idSetter, TextField id, TextField name, TextField price,
                                        TextField stock, TextField min, TextField max, TextField machineInfo,
-                                       Button saveButton, GridPane conformationScene, String windowTitle) {
+                                       Button saveButton, GridPane conformationSceneSuccess, GridPane conformationSceneFailed) {
+
+            idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                id.setPromptText("Auto Generated");
+                id.setDisable(true);
+                id.setEditable(false);
+            });
 
             saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                String itemTypeText = String.valueOf(itemType);
+                RadioButton tt = (RadioButton) itemType.getSelectedToggle();
+                String itemTypeText = tt.getText();
 
-                if (itemTypeText.equals("In-House")){
+                if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
                     int newMachineInfo = Integer.parseInt(machineInfo.getText());
-                    InHouse newPart = new InHouse(newPartId, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max),newMachineInfo);
+                    InHouse newPart = new InHouse(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max),newMachineInfo);
                     addPart(newPart);
+
+                    toastyScene.setRoot(conformationSceneSuccess);
+                }
+                else if(itemTypeText.equals("Outsourced") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)) {
+                    String newMachineInfo = machineInfo.getText();
+                    Outsourced newPart = new Outsourced(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max), newMachineInfo);
+                    addPart(newPart);
+
+//                    ++newPartId;
+                    toastyScene.setRoot(conformationSceneSuccess);
                 }
                 else {
-                    String newMachineInfo = machineInfo.getText();
-                    Outsourced newPart = new Outsourced(newPartId, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max),newMachineInfo);
-                    addPart(newPart);
+                    toastyScene.setRoot(conformationSceneFailed);
                 }
-                ++newPartId;
-                Stage popUp = new Stage();
-                toastyScene = new Scene(conformationScene);
-                popUp.setTitle(windowTitle);
-                popUp.setScene(toastyScene);
-                popUp.sizeToScene();
-                popUp.show();
+
             });
         }
 
 
-
-
+        public static Product newProduct;
         //Add Product TextField Use
         public static void saveNewProduct(
-                                       TextField name, TextField price, TextField stock, TextField min, TextField max,
+                                       Button idSetter, TextField id, TextField name, TextField price, TextField stock, TextField min, TextField max,
                                        Button saveButton, Button addSelectedPartButton, Button removeSelectedPartButton,
-                                       GridPane conformationScene,
-                                       String windowTitle,
+                                       GridPane conformationSceneSuccess, GridPane conformationSceneFailed,
                                        TableView<Part> partsTable, TableView<Part> associatedPartsTable){
 
-            Product newProduct = new Product(newProductId, newProductName(name), newProductPrice(price), newProductStock(stock), newProductMin(min), newProductMax(max));
-
+            idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                id.setPromptText("Auto Generated");
+                id.setDisable(true);
+                id.setEditable(false);
+            });
+            newProduct = new Product(0,"name",0.0,0,0,0);
             addSelectedPartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                newProduct.setId(allProducts.size()+1);
+                newProduct.setName(newProductName(name));
+                newProduct.setPrice(newProductPrice(price));
+                newProduct.setStock(newProductStock(stock));
+                newProduct.setMin(newProductMin(min));
+                newProduct.setMax(newProductMax(max));
+
                 ObservableList<Part> selectedPart = partsTable.getSelectionModel().getSelectedItems();
                     for(Part hotFilter : selectedPart){
                         newProduct.addAssociatedParts(hotFilter);
+                    }
+                    associatedPartsTable.setItems(newProduct.getAllAssociatedParts());
+
+            });
+
+            removeSelectedPartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                ObservableList<Part> selectedPart = associatedPartsTable.getSelectionModel().getSelectedItems();
+                for(Part hotFilter : selectedPart){
+                    newProduct.deleteAssociatedPart(hotFilter);
+                }
+                associatedPartsTable.setItems(newProduct.getAllAssociatedParts());
+            });
+
+            saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                if(newProductName(name) != null && newProductPrice(price) != 0 && newProductMax(max) != 0){
+                    newProduct.setId(allProducts.size()+1);
+                    newProduct.setName(newProductName(name));
+                    newProduct.setPrice(newProductPrice(price));
+                    newProduct.setStock(newProductStock(stock));
+                    newProduct.setMin(newProductMin(min));
+                    newProduct.setMax(newProductMax(max));
+                    System.out.println(newProduct.getAllAssociatedParts());
+                    addProduct(newProduct);
+
+                    toastyScene.setRoot(conformationSceneSuccess);
+                }else {
+                    toastyScene.setRoot(conformationSceneFailed);
+                }
+
+            });
+        }
+
+        //Delete Part
+        public static void deleteSelectedPart(Button theButton, TableView<Part> partsTable){
+                theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                    ObservableList<Part> selectedPart = partsTable.getSelectionModel().getSelectedItems();
+                    for (Part hotFilter : selectedPart){
+                        deletePart(hotFilter);
+                    }
+                });
+            }
+
+        //Delete Product
+        public static void deleteSelectedProduct(Button theButton, TableView<Product> productsTable){
+        theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            ObservableList<Product> selectedPart = productsTable.getSelectionModel().getSelectedItems();
+            for (Product hotFilter : selectedPart){
+                deleteProduct(hotFilter);
+                hotFilter.getAllAssociatedParts().clear();
+            }
+        });
+    }
+
+
+        public static int existingPartID;
+        //Modify Part
+        public static void modifyPart(ToggleGroup partType, Button idSetter, TextField id, TextField name, TextField price,
+                                      TextField stock, TextField min, TextField max, TextField machineInfo,
+                                      Button saveButton, GridPane conformationSceneSuccess, GridPane conformationSceneFailed, TableView<Part> partsTableView){
+
+            idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                String testy = String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getId());
+                if(!testy.isEmpty()){
+                    existingPartID = partsTableView.getSelectionModel().selectedItemProperty().get().getId();
+                    id.setText(String.valueOf(existingPartID));
+                    id.setEditable(false);
+                    id.setDisable(true);
+                }else{
+                    toastyScene.setRoot(conformationSceneFailed);
+                }
+            });
+
+            saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                RadioButton tt = (RadioButton) partType.getSelectedToggle();
+                String itemTypeText = tt.getText();
+
+                if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
+                    int newMachineInfo = Integer.parseInt(machineInfo.getText());
+                    InHouse newPart = new InHouse(existingPartID,modifyPartName(name),modifyPartPrice(price),modifyPartStock(stock),modifyPartMin(min),modifyPartMax(max),newMachineInfo);
+                    updatePart(existingPartID,newPart);
+                    toastyScene.setRoot(conformationSceneSuccess);
+                }
+                else if(itemTypeText.equals("Outsourced") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
+                    String newMachineInfo = machineInfo.getText();
+                    Outsourced newPart = new Outsourced(existingPartID,modifyPartName(name),modifyPartPrice(price),modifyPartStock(stock),modifyPartMin(min),modifyPartMax(max),newMachineInfo);
+                    updatePart(existingPartID,newPart);
+                    toastyScene.setRoot(conformationSceneSuccess);
+                }
+                else{
+                    toastyScene.setRoot(conformationSceneFailed);
+                }
+            });
+        }
+
+        public static int existingProductID;
+        //Modify Product
+        public static void modifyProduct(TextField id, TextField name, TextField price,
+                                      TextField stock, TextField min, TextField max,
+                                      Button saveButton, Button addSelectedPartButton, Button removeSelectedPartButton, Button modifyButton,
+                                      GridPane conformationSceneSuccess, GridPane conformationSceneFailed,
+                                      TableView<Part> partsTable, TableView<Part> associatedPartsTable,
+                                      TableView<Product> productsTable){
+
+            modifyButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                String testy = String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getId());
+                if(!testy.isEmpty()){
+                    existingProductID = productsTable.getSelectionModel().selectedItemProperty().get().getId();
+                    id.setText(String.valueOf(existingProductID));
+                    id.setEditable(false);
+                    id.setDisable(true);
+                    name.setPromptText(productsTable.getSelectionModel().selectedItemProperty().get().getName());
+                    price.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getPrice()));
+                    stock.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getStock()));
+                    min.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getMin()));
+                    max.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getMax()));
+
+                    associatedPartsTable.setItems(newProduct.getAllAssociatedParts());
+                    System.out.println(newProduct.getAllAssociatedParts());
+                }else{
+                    toastyScene.setRoot(conformationSceneFailed);
+                }
+
+            });
+
+            addSelectedPartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+                ObservableList<Part> selectedPart = partsTable.getSelectionModel().getSelectedItems();
+                for(Part hotFilter : selectedPart){
+                    newProduct.addAssociatedParts(hotFilter);
                 }
                 associatedPartsTable.setItems(newProduct.getAllAssociatedParts());
             });
@@ -617,126 +741,81 @@ public class InventorySystem extends Application {
             });
 
             saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Product newProductCopy = new Product(newProductId, newProductName(name), newProductPrice(price), newProductStock(stock), newProductMin(min), newProductMax(max));
-                    addProduct(newProductCopy);
+                if(modifyProductName(name) != null && modifyProductPrice(price) != 0 && modifyProductMax(max) != 0) {
+//                    Product updatedProduct = new Product(productsTable.getSelectionModel().selectedItemProperty().get().getId(), modifyProductName(name), modifyProductPrice(price), modifyProductStock(stock), modifyProductMin(min), modifyProductMax(max));
+                    productsTable.getItems().set(productsTable.getSelectionModel().selectedItemProperty().get().getId()-1,newProduct);
+                    toastyScene.setRoot(conformationSceneSuccess);
 
-                ++newProductId;
-                Stage popUp = new Stage();
-                toastyScene = new Scene(conformationScene);
-                popUp.setTitle(windowTitle);
-                popUp.setScene(toastyScene);
-                popUp.sizeToScene();
-                popUp.show();
+                    newProduct.setName(modifyProductName(name));
+                    newProduct.setPrice(modifyProductPrice(price));
+                    newProduct.setStock(modifyProductStock(stock));
+                    newProduct.setMin(modifyProductMin(min));
+                    newProduct.setMax(modifyProductMax(max));
+
+                    updatePart(existingPartID,newProduct);
+
+                }
+                else{
+                    toastyScene.setRoot(conformationSceneFailed);
+                }
+
             });
         }
 
-        //Delete Part
-        public static void deleteSelectedPart(Button theButton, TableView<Part> partsTable){
-                theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                    ObservableList<Part> selectedPart = partsTable.getSelectionModel().getSelectedItems();
-                    for (Part hotFilter : selectedPart){
-                        deletePart(hotFilter);
-                    }
-                    --newPartId;
-                });
-            }
+    public static Predicate<Part> createPartPredicate(String searchText){
+        return part -> {
+            if (searchText == null || searchText.isEmpty()) return true;
+            return searchFindsPart(part, searchText);
+        };
+    }
 
-        //Delete Product
-        public static void deleteSelectedProduct(Button theButton, TableView<Product> productsTable){
-        theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            ObservableList<Product> selectedPart = productsTable.getSelectionModel().getSelectedItems();
-            for (Product hotFilter : selectedPart){
-                deleteProduct(hotFilter);
-                hotFilter.getAllAssociatedParts().clear();
-            }
-            --newProductId;
-        });
+    public static Predicate<Product> createProductPredicate(String searchText){
+        return product -> {
+            if (searchText == null || searchText.isEmpty()) return true;
+            return searchFindsProduct(product, searchText);
+        };
+    }
+
+    public static boolean searchFindsPart(Part part, String searchText){
+            return (part.getName().toLowerCase().contains(searchText)) ||
+                    (Integer.valueOf(part.getId()).toString().equals(searchText));
+    }
+
+    public static boolean searchFindsProduct(Product product, String searchText){
+        return (product.getName().toLowerCase().contains(searchText)) ||
+                (Integer.valueOf(product.getId()).toString().equals(searchText));
     }
 
 
-        public static int existingPartID;
-        //Modify Part
-        public static void modifyPart(ToggleGroup partType, Button idSetter, TextField id, TextField name, TextField price,
-                                      TextField stock, TextField min, TextField max, TextField machineInfo,
-                                      Button saveButton, GridPane conformationScene, String windowTitle, TableView<Part> partsTableView){
 
-            idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                existingPartID = partsTableView.getSelectionModel().selectedItemProperty().get().getId();
-                id.setText(String.valueOf(existingPartID));
-                id.setEditable(false);
-            });
+        public static void searchPart(TextField searchBar, TableView<Part> partTableView){
+            try{
 
-            saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                        itemTypeText = String.valueOf(partType);
+                FilteredList<Part> partsFilteredList = new FilteredList<>(FXCollections.observableList(allParts));
+                partTableView.setItems(partsFilteredList);
 
-                if (itemTypeText.equals("In-House")){
-                    int newMachineInfo = Integer.parseInt(machineInfo.getText());
-                    InHouse newPart = new InHouse(existingPartID,modifyPartName(name),modifyPartPrice(price),modifyPartStock(stock),modifyPartMin(min),modifyPartMax(max),newMachineInfo);
-                    updatePart(existingPartID,newPart);
-                }
-                else {
-                    String newMachineInfo = machineInfo.getText();
-                    Outsourced newPart = new Outsourced(existingPartID,modifyPartName(name),modifyPartPrice(price),modifyPartStock(stock),modifyPartMin(min),modifyPartMax(max),newMachineInfo);
-                    updatePart(existingPartID,newPart);
-                }
+                searchBar.textProperty().addListener(((observable, oldValue, newValue) ->
+                        partsFilteredList.setPredicate(createPartPredicate(newValue))));
 
-                Stage popUp = new Stage();
-                toastyScene = new Scene(conformationScene);
-                popUp.setTitle(windowTitle);
-                popUp.setScene(toastyScene);
-                popUp.sizeToScene();
-                popUp.show();
-            });
+            }
+            catch (Exception e){
+                partTableView.setItems(getAllParts());
+            }
         }
+    public static void searchProduct(TextField searchBar, TableView<Product> productTableView){
+        try{
 
-        public static int existingProductID;
-        //Modify Product
-        public static void modifyProduct(TextField id, TextField name, TextField price,
-                                      TextField stock, TextField min, TextField max,
-                                      Button saveButton, Button addSelectedPartButton, Button removeSelectedPartButton, Button modifyButton,
-                                      GridPane conformationScene,
-                                      String windowTitle,
-                                      TableView<Part> partsTable, TableView<Part> associatedPartsTable,
-                                      TableView<Product> productsTable){
+            FilteredList<Product> productsFilteredList = new FilteredList<>(FXCollections.observableList(allProducts));
+            productTableView.setItems(productsFilteredList);
 
-            modifyButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                existingProductID = productsTable.getSelectionModel().selectedItemProperty().get().getId();
-                id.setText(String.valueOf(existingProductID));
-                id.setEditable(false);
-                associatedPartsTable.setItems(productsTable.getSelectionModel().selectedItemProperty().get().getAllAssociatedParts());
-            });
+            searchBar.textProperty().addListener(((observable, oldValue, newValue) ->
+                    productsFilteredList.setPredicate(createProductPredicate(newValue))));
 
-            addSelectedPartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Product productToUpdate = lookupProduct(existingProductID);
-                ObservableList<Part> selectedPart = partsTable.getSelectionModel().getSelectedItems();
-                for(Part hotFilter : selectedPart){
-                    productToUpdate.addAssociatedParts(hotFilter);
-                }
-                associatedPartsTable.setItems(productToUpdate.getAllAssociatedParts());
-            });
-
-            removeSelectedPartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Product productToUpdate = lookupProduct(existingProductID);
-                ObservableList<Part> selectedPart = associatedPartsTable.getSelectionModel().getSelectedItems();
-                for(Part hotFilter : selectedPart){
-                    productToUpdate.deleteAssociatedPart(hotFilter);
-                }
-                associatedPartsTable.setItems(productToUpdate.getAllAssociatedParts());
-            });
-
-            saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                Product updatedProduct = new Product(existingProductID,modifyProductName(name),modifyProductPrice(price),modifyProductStock(stock),modifyProductMin(min),modifyProductMax(max));
-                updateProduct(existingProductID, updatedProduct);
-
-                Stage popUp = new Stage();
-                toastyScene = new Scene(conformationScene);
-                popUp.setTitle(windowTitle);
-                popUp.setScene(toastyScene);
-                popUp.sizeToScene();
-                popUp.show();
-            });
         }
-
+        catch (Exception e){
+            productTableView.setItems(getAllProducts());
+        }
+    }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -745,6 +824,7 @@ public class InventorySystem extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        toastyStage = stage;
 
         //Grid Creation
         GridPane mainMenuGrid = new GridPane();
@@ -869,6 +949,10 @@ public class InventorySystem extends Application {
             partsTableView.getColumns().add(minColumn);
             partsTableView.getColumns().add(maxColumn);
             partsTable.getChildren().add(partsTableView);
+
+
+
+
 
         //Product Table Setup
 
@@ -1775,9 +1859,45 @@ public class InventorySystem extends Application {
 
 
 
-        GridPane con = new GridPane();
-        Text conInfo = new Text("In worked");
-        con.getChildren().add(conInfo);
+        GridPane conAddGood = new GridPane();
+        Text conAddGoodInfo = new Text("Addition Successful");
+        Button conAddGoodCloseButton = new Button("Close");
+        conAddGoodInfo.setFont(new Font(20));
+        conAddGood.getChildren().add(conAddGoodInfo);
+        conAddGood.getChildren().add(conAddGoodCloseButton);
+        sceneChanger(mainMenuGrid,mainMenuGrid,conAddGoodCloseButton,conAddGoodCloseButton);
+        GridPane.setConstraints(conAddGoodInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
+        GridPane.setConstraints(conAddGoodCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+
+        GridPane conAddBad = new GridPane();
+        Text conAddBadInfo = new Text("Addition Unsuccessful");
+        Button conAddBadCloseButton = new Button("Close");
+        conAddBadInfo.setFont(new Font(20));
+        conAddBad.getChildren().add(conAddBadInfo);
+        conAddBad.getChildren().add(conAddBadCloseButton);
+        sceneChanger(mainMenuGrid,mainMenuGrid,conAddBadCloseButton,conAddBadCloseButton);
+        GridPane.setConstraints(conAddBadInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
+        GridPane.setConstraints(conAddBadCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+
+        GridPane conModifyGood = new GridPane();
+        Text conModifyGoodInfo = new Text("Modification Successful");
+        Button conModifyGoodCloseButton = new Button("Close");
+        conModifyGoodInfo.setFont(new Font(20));
+        conModifyGood.getChildren().add(conModifyGoodInfo);
+        conModifyGood.getChildren().add(conModifyGoodCloseButton);
+        sceneChanger(mainMenuGrid,mainMenuGrid,conModifyGoodCloseButton,conModifyGoodCloseButton);
+        GridPane.setConstraints(conModifyGoodInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
+        GridPane.setConstraints(conModifyGoodCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+
+        GridPane conModifyBad = new GridPane();
+        Text conModifyBadInfo = new Text("Modification Unsuccessful");
+        Button conModifyBadCloseButton = new Button("Close");
+        conModifyBadInfo.setFont(new Font(20));
+        conModifyBad.getChildren().add(conModifyBadInfo);
+        conModifyBad.getChildren().add(conModifyBadCloseButton);
+        sceneChanger(mainMenuGrid,mainMenuGrid,conModifyBadCloseButton,conModifyBadCloseButton);
+        GridPane.setConstraints(conModifyBadInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
+        GridPane.setConstraints(conModifyBadCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
 
         //Event Testing Site
         InHouse test1 = new InHouse(1, "InHouse Toast 1", 1.11,2,1,2,43);
@@ -1794,25 +1914,30 @@ public class InventorySystem extends Application {
         addPart(test5);
         addPart(test6);
 
-        sceneChanger(addNewPartGrid, addPartButton, cancelNewPart, "Add Part Menu");
-        sceneChanger(modifyPartGrid, modifyPartButton, cancelModifiedPart, "Modify Part Menu");
-        saveNewPart(partType,addPartNameTextField,addPartPriceTextField,addPartStockTextField,addPartMinTextField,addPartMaxTextField,addPartMachineIdText,saveNewPart,con," Part Addition Successful");
-        modifyPart(modifyPartType, modifyPartButton,modifyPartIdTextField,modifyPartNameTextField,modifyPartPriceTextField,modifyPartStockTextField,modifyPartMinTextField,modifyPartMaxTextField,modifyPartMachineIdTextField,saveModifiedPart,con," Part Modification Successful",partsTableView);
+        searchPart(partsSearchBar,partsTableView);
+        searchPart(addProductSearchBar,associatablePartsTable);
+        searchPart(modifyProductSearchBar,associatablePartsTableModify);
+        searchProduct(productsSearchBar,productsTableView);
+
+        sceneChanger(addNewPartGrid, mainMenuGrid,addPartButton, cancelNewPart);
+        sceneChanger(modifyPartGrid, mainMenuGrid,modifyPartButton, cancelModifiedPart);
+        saveNewPart(partType,addPartButton,addPartIdTextField,addPartNameTextField,addPartPriceTextField,addPartStockTextField,addPartMinTextField,addPartMaxTextField,addPartMachineIdText,saveNewPart,conAddGood, conAddBad);
+        modifyPart(modifyPartType, modifyPartButton,modifyPartIdTextField,modifyPartNameTextField,modifyPartPriceTextField,modifyPartStockTextField,modifyPartMinTextField,modifyPartMaxTextField,modifyPartMachineIdTextField,saveModifiedPart,conModifyGood, conModifyBad,partsTableView);
         deleteSelectedPart(deletePartButton,partsTableView);
 
-        sceneChanger(addProductMenuGrid, addProductButton, cancelNewProduct, "Add Product Menu");
-        sceneChanger(modifyProductMenuGrid, modifyProductButton, cancelModifiedProduct, "Modify Product Menu");
-        saveNewProduct(addProductNameTextField,addProductPriceTextField,addProductStockTextField,addProductMinTextField,addProductMaxTextField,saveNewProduct,addAssociatedPartButton,removeAssociatedPartButton,con,"New Product Successful",associatablePartsTable,associatedPartsTable);
-        modifyProduct(modifyProductIdTextField,modifyProductNameTextField,modifyProductPriceTextField,modifyProductStockTextField,modifyProductMinTextField,modifyProductMaxTextField,saveModifiedProduct,addAssociatedPartButtonModify,removeAssociatedPartButtonModify,modifyProductButton,con,"Product Modified",partsTableView,associatedPartsTable,productsTableView);
+        sceneChanger(addProductMenuGrid, mainMenuGrid,addProductButton, cancelNewProduct);
+        sceneChanger(modifyProductMenuGrid, mainMenuGrid,modifyProductButton, cancelModifiedProduct);
+        saveNewProduct(addProductButton,addProductIdTextField,addProductNameTextField,addProductPriceTextField,addProductStockTextField,addProductMinTextField,addProductMaxTextField,saveNewProduct,addAssociatedPartButton,removeAssociatedPartButton,conAddGood, conAddBad,associatablePartsTable,associatedPartsTable);
+        modifyProduct(modifyProductIdTextField,modifyProductNameTextField,modifyProductPriceTextField,modifyProductStockTextField,modifyProductMinTextField,modifyProductMaxTextField,saveModifiedProduct,addAssociatedPartButtonModify,removeAssociatedPartButtonModify,modifyProductButton,conModifyGood,conModifyBad,partsTableView,associatedPartsTableModify,productsTableView);
         deleteSelectedProduct(deleteProductButton,productsTableView);
 
         closeProgram(exitButton);
 
         toastyScene = new Scene(mainMenuGrid);
-        stage.setTitle("Inventory Management System");
-        stage.setScene(toastyScene);
-        stage.sizeToScene();
-        stage.show();
+        toastyStage.setTitle("Inventory Management System");
+        toastyStage.setScene(toastyScene);
+        toastyStage.sizeToScene();
+        toastyStage.show();
     }
 
 

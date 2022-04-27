@@ -1,5 +1,8 @@
 package org.openjfx.software_1_fx_assignment;
-
+/**
+ *
+ * @author Cristian Rogers
+ */
 public class Outsourced extends Part{
 
     private String companyName;

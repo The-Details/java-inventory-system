@@ -1,5 +1,8 @@
 package org.openjfx.software_1_fx_assignment;
-
+/**
+ *
+ * @author Cristian Rogers
+ */
 public class InHouse extends Part{
 
     private int machineId;

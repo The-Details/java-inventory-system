@@ -1,5 +1,8 @@
 package org.openjfx.software_1_fx_assignment;
-
+/**
+ *
+ * @author Cristian Rogers
+ */
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

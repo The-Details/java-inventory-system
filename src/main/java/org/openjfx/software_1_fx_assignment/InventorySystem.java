@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
@@ -32,14 +31,35 @@ public class InventorySystem extends Application {
         private static ObservableList<Part> allParts = FXCollections.observableArrayList();
         private static ObservableList<Product> allProducts = FXCollections.observableArrayList();
 
+    /**
+     *
+     * @param newPart
+     * This method adds parts to the all parts observable list
+     */
         public static void addPart(Part newPart) {
             allParts.add(newPart);
         }
 
+    /**
+     *
+     * @param partId
+     * This method lookup part by taking a part's ID and returning the part
+     *
+     * @return
+     * This method will return the requested part
+     */
         public static Part lookupPart(int partId) {
             return allParts.get(partId);
         }
 
+    /**
+     *
+     * @param partName
+     *This method lookup part by taking a part's name and returning the part
+     *
+     * @return
+     * This method will return the requested part
+     */
         public static ObservableList<Part> lookupPart(String partName){
             ObservableList<Part> searchablePart = FXCollections.observableArrayList();
             for (Part partIterator : allParts){
@@ -50,6 +70,14 @@ public class InventorySystem extends Application {
             return searchablePart;
         }
 
+    /**
+     *
+     * @param index
+     * This method will take a known part index and use it in-conjunction with the remaining existing part data
+     *
+     * @param selectedPart
+     * This method will take existing part data and update it based on user input
+     */
         public static void updatePart(int index, Part selectedPart){
             String name = selectedPart.getName();
             int stock = selectedPart.getStock();
@@ -66,18 +94,48 @@ public class InventorySystem extends Application {
             }
         }
 
+    /**
+     *
+     * @param selectedPart
+     * This method will take existing part data and delete it
+     * @return
+     * This method will take existing part data and remove the data from the observable list using the remove function of the list
+     */
         public static boolean deletePart(Part selectedPart){
             return allParts.remove(selectedPart);
         }
 
+    /**
+     *
+     * @param newProduct
+     * This method adds parts to the all products observable list
+     */
         public static void addProduct(Product newProduct) {
            allProducts.add(newProduct);
         }
 
+    /**
+     *
+     * @param productId
+     * This method lookup part by taking a product's ID and returning the product
+     *
+     * @return
+     * This method will return the requested product
+     *
+     */
         public static Product lookupProduct(int productId) {
             return allProducts.get(productId);
         }
 
+    /**
+     *
+     * @param productName
+     * This method lookup part by taking a product's name and returning the product
+     *
+     * @return
+     * This method will return the requested product
+     *
+     */
         public static ObservableList<Product> lookupProduct(String productName){
             ObservableList<Product> searchableProduct = FXCollections.observableArrayList();
             for (Product productIterator : allProducts){
@@ -88,6 +146,15 @@ public class InventorySystem extends Application {
             return searchableProduct;
         }
 
+    /**
+     *
+     * @param index
+     * This method will take a known product index and use it in-conjunction with the remaining existing product data
+     *
+     * @param selectedProduct
+     * This method will take existing product data and update it based on user input
+     *
+     */
         public static void updateProduct(int index, Product selectedProduct){
             String name = selectedProduct.getName();
             int stock = selectedProduct.getStock();
@@ -104,15 +171,35 @@ public class InventorySystem extends Application {
             }
         }
 
-        public static boolean deleteProduct(Part selectedProduct){
-            allProducts.remove(selectedProduct.getId());
+    /**
+     *
+     * @param selectedProduct
+     * This method will take existing product data and delete it
+     *
+     * @return
+     * This method will take existing product data and remove the data from the observable list using the remove function of the list
+     *
+     */
+        public static boolean deleteProduct(Product selectedProduct){
+            allProducts.remove(selectedProduct);
             return true;
         }
 
+    /**
+     *
+     * @return
+     * This method will return all parts
+     *
+     */
         public static ObservableList<Part> getAllParts(){
             return allParts;
         }
 
+    /**
+     *
+     * @return
+     * This method will return all product
+     */
         public static ObservableList<Product> getAllProducts(){
             return allProducts;
         }
@@ -148,6 +235,15 @@ public class InventorySystem extends Application {
     public static int modifyProductMax;
 
 
+    /**
+     *
+     * @param stock
+     * The new part stock takes the new part's stock text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+
     //Validators
         public static int newPartStock(TextField stock){
             try{
@@ -157,18 +253,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Inventory Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int newPartMin(TextField min){
+
+    /**
+     *
+     * @param min
+     * The new part min takes the new part's min text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int newPartMin(TextField min){
             try{
                 newPartMin = Integer.parseInt(min.getText());
                 return newPartMin;
@@ -176,18 +285,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Min Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int newPartMax(TextField max){
+
+    /**
+     *
+     * @param max
+     * The new part max takes the new part's max text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int newPartMax(TextField max){
             try{
                 newPartMax = Integer.parseInt(max.getText());
                 return newPartMax;
@@ -195,18 +317,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Max Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static double newPartPrice(TextField price){
+
+    /**
+     *
+     * @param price
+     * The new part price takes the new part's price text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static double newPartPrice(TextField price){
             try{
                 newPartPrice = Double.parseDouble(price.getText());
                 return newPartPrice;
@@ -214,18 +349,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Price Error: Input Value must be a decimal");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static String newPartName(TextField name){
+
+    /**
+     *
+     * @param name
+     * The new part name takes the new part's name text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return null
+     */
+    public static String newPartName(TextField name){
                 try{
                     newPartName = name.getText();
                     return newPartName;
@@ -233,18 +381,31 @@ public class InventorySystem extends Application {
                     GridPane error = new GridPane();
                     Text errorInfo = new Text("Part Name Error: Input Value must be a alpha-numeric characters");
                     errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
                     error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                     GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
                     Stage popUp = new Stage();
-                    toastyScene = new Scene(error);
+                    Scene errorScene = new Scene(error);
                     popUp.setTitle("Error");
-                    popUp.setScene(toastyScene);
+                    popUp.setScene(errorScene);
                     popUp.sizeToScene();
                     popUp.show();
                     return null;
                 }
             }
-        public static int newProductStock(TextField stock){
+
+    /**
+     *
+     * @param stock
+     * The new product stock takes the new product's stock text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int newProductStock(TextField stock){
             try{
                 newProductStock = Integer.parseInt(stock.getText());
                 return newProductStock;
@@ -252,18 +413,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Inventory Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int newProductMin(TextField min){
+
+    /**
+     *
+     * @param min
+     * The new product min takes the new product's min text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int newProductMin(TextField min){
             try{
                 newProductMin = Integer.parseInt(min.getText());
                 return newProductMin;
@@ -271,18 +445,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Min Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int newProductMax(TextField max){
+
+    /**
+     *
+     * @param max
+     * The new product max takes the new product's max text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int newProductMax(TextField max){
             try{
                 newProductMax = Integer.parseInt(max.getText());
                 return newProductMax;
@@ -290,18 +477,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Max Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static double newProductPrice(TextField price){
+
+    /**
+     *
+     * @param price
+     * The new product price takes the new product's price text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static double newProductPrice(TextField price){
             try{
                 newProductPrice = Double.parseDouble(price.getText());
                 return newProductPrice;
@@ -309,18 +509,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Price Error: Input Value must be a decimal");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static String newProductName(TextField name){
+
+    /**
+     *
+     * @param name
+     * The new product name takes the new product's name text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return null
+     */
+    public static String newProductName(TextField name){
             try{
                 newProductName = name.getText();
                 return newProductName;
@@ -328,19 +541,30 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Name Error: Input Value must be a alpha-numeric characters");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return null;
             }
         }
 
-
+    /**
+     *
+     * @param stock
+     * The modified part stock takes the modified part's stock text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
         public static int modifyPartStock(TextField stock){
             try{
                 modifyPartStock = Integer.parseInt(stock.getText());
@@ -349,18 +573,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Inventory Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int modifyPartMin(TextField min){
+
+    /**
+     *
+     * @param min
+     * The modified part min takes the modified part's min text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int modifyPartMin(TextField min){
             try{
                 modifyPartMin = Integer.parseInt(min.getText());
                 return modifyPartMin;
@@ -368,18 +605,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Min Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int modifyPartMax(TextField max){
+
+    /**
+     *
+     * @param max
+     * The modified part max takes the modified part's max text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int modifyPartMax(TextField max){
             try{
                 modifyPartMax = Integer.parseInt(max.getText());
                 return modifyPartMax;
@@ -387,18 +637,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Part Max Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static double modifyPartPrice(TextField price){
+
+    /**
+     *
+     * @param price
+     * The modified part price takes the modified part's price text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static double modifyPartPrice(TextField price){
             try{
                 modifyPartPrice = Double.parseDouble(price.getText());
                 return modifyPartPrice;
@@ -406,18 +669,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Price Error: Input Value must be a decimal");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static String modifyPartName(TextField name){
+
+    /**
+     *
+     * @param name
+     * The modified part name takes the modified part's name text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return null
+     */
+    public static String modifyPartName(TextField name){
             try{
                 modifyPartName = name.getText();
                 return modifyPartName;
@@ -425,18 +701,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Name Error: Input Value must be a alpha-numeric characters");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return null;
             }
         }
-        public static int modifyProductStock(TextField stock){
+
+    /**
+     *
+     * @param stock
+     * The modified product stock takes the new product's stock text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int modifyProductStock(TextField stock){
             try{
                 modifyProductStock = Integer.parseInt(stock.getText());
                 return modifyProductStock;
@@ -444,18 +733,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Inventory Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int modifyProductMin(TextField min){
+
+    /**
+     *
+     * @param min
+     * The modified product min takes the modified product's min text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int modifyProductMin(TextField min){
             try{
                 modifyProductMin = Integer.parseInt(min.getText());
                 return modifyProductMin;
@@ -463,18 +765,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Min Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static int modifyProductMax(TextField max){
+
+    /**
+     *
+     * @param max
+     * The modified product max takes the new product's max text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static int modifyProductMax(TextField max){
             try{
                 modifyProductMax = Integer.parseInt(max.getText());
                 return modifyProductMax;
@@ -482,18 +797,31 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Product Max Error: Input Value must be a whole number");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static double modifyProductPrice(TextField price){
+
+    /**
+     *
+     * @param price
+     * The modified product price takes the modified product's price text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return 0
+     */
+    public static double modifyProductPrice(TextField price){
             try{
                 modifyProductPrice = Double.parseDouble(price.getText());
                 return modifyProductPrice;
@@ -501,34 +829,77 @@ public class InventorySystem extends Application {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Price Error: Input Value must be a decimal");
                 errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
                 Stage popUp = new Stage();
-                toastyScene = new Scene(error);
+                Scene errorScene = new Scene(error);
                 popUp.setTitle("Error");
-                popUp.setScene(toastyScene);
+                popUp.setScene(errorScene);
                 popUp.sizeToScene();
                 popUp.show();
                 return 0;
             }
         }
-        public static String modifyProductName(TextField name){
+
+    /**
+     *
+     * @param name
+     * The modified product name takes the modified product's name text-field to verify whether the appropriate data type has been entered
+     *
+     * @return
+     * If the right data type is entered it will return that data type otherwise it will return null
+     */
+    public static String modifyProductName(TextField name){
             try{
                 modifyProductName = name.getText();
                 return modifyProductName;
             }catch(NumberFormatException e){
+                GridPane error = new GridPane();
+                Text errorInfo = new Text("Name Error: Input Value must be an alphanumeric string");
+                errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
+                error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                closeProgram(errorInfoCloseButton);
+                Stage popUp = new Stage();
+                Scene errorScene = new Scene(error);
+                popUp.setTitle("Error");
+                popUp.setScene(errorScene);
+                popUp.sizeToScene();
+                popUp.show();
                 return null;
             }
         }
 
-
+    /**
+     *
+     * @param theNewScene
+     * This method accepts theNewScene as a place it will go to
+     * @param theMainScene
+     * This method accepts theMainScene as a place it will return to
+     * @param theOpenButton
+     * This method accepts a button that will be used to go to theNewScene
+     * @param theCloseButton
+     * This method accepts a button that will be used to return to theMainScene
+     */
         //Scene Change
         public static void sceneChanger(GridPane theNewScene, GridPane theMainScene,Button theOpenButton,Button theCloseButton){
             theOpenButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> toastyScene.setRoot(theNewScene));
             theCloseButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> toastyScene.setRoot(theMainScene));
         }
 
-        //Close Program
+    /**
+     *
+     * @param theButton
+     * This method accepts a button that will be used to close the currently open stage or node
+     */
+    //Close Program
         public static void closeProgram(Button theButton){
             theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 Node source = (Node) event.getSource();
@@ -537,34 +908,124 @@ public class InventorySystem extends Application {
             });
         }
 
+    /**
+     *
+     * @param itemType
+     * This method accepts a toggle group that will be used to determine which part type is being added
+     * @param inHouse
+     * This method accepts a radio button that is part of the toggle group, and it will be used in conjunction with the toggle group to determine the part type
+     * @param outsourced
+     * This method accepts a radio button that is part of the toggle group, and it will be used in conjunction with the toggle group to determine the part type
+     * @param idSetter
+     * This method accepts a button that will be used to perform some housekeeping on the text-fields
+     * @param id
+     * This method accepts a text-field that will be used to collect the part id
+     * @param name
+     * This method accepts a text-field that will be used to collect the part name
+     * @param price
+     * This method accepts a text-field that will be used to collect the part price
+     * @param stock
+     * This method accepts a text-field that will be used to collect the part stock
+     * @param min
+     * This method accepts a text-field that will be used to collect the part min
+     * @param max
+     * This method accepts a text-field that will be used to collect the part max
+     * @param machineInfo
+     * This method accepts a text-field that will be used to collect the machine information
+     * @param addMachineId
+     * This method accepts the machine info's text label and uses it to change the text displayed when the part type changes
+     * @param saveButton
+     * This method accepts a button that will be used to add new part the list as well as verify part data before submission
+     * @param conformationSceneSuccess
+     * This method accepts a grid pane that will be used to display success info
+     * @param conformationSceneFailed
+     * This method accepts a grid pane that will be used to display failed info
+     * @param newPartsTable
+     * This method accepts components table that will be manipulated in the process af add a new part
+     */
         //Add Part TextField Use
-        public static void saveNewPart(ToggleGroup itemType, Button idSetter, TextField id, TextField name, TextField price,
-                                       TextField stock, TextField min, TextField max, TextField machineInfo,
-                                       Button saveButton, GridPane conformationSceneSuccess, GridPane conformationSceneFailed) {
+        public static void saveNewPart(ToggleGroup itemType, RadioButton inHouse, RadioButton outsourced,
+                                       Button idSetter, TextField id, TextField name, TextField price,
+                                       TextField stock, TextField min, TextField max, TextField machineInfo, Text addMachineId,
+                                       Button saveButton, GridPane conformationSceneSuccess, GridPane conformationSceneFailed,
+                                        TableView<Part> newPartsTable) {
 
             idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 id.setPromptText("Auto Generated");
                 id.setDisable(true);
                 id.setEditable(false);
+                name.clear();
+                price.clear();
+                stock.clear();
+                min.clear();
+                max.clear();
+                machineInfo.clear();
             });
+
+            itemType.selectedToggleProperty().addListener((observableValue, toggle, newToggle) -> {
+                if (newToggle == inHouse){
+                    addMachineId.setText("Machine ID");
+                }
+                else if (newToggle == outsourced){
+                    addMachineId.setText("Company Name");
+                }
+                else {
+                    addMachineId.setText("Machine ID");
+                }
+            });
+
 
             saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 RadioButton tt = (RadioButton) itemType.getSelectedToggle();
                 String itemTypeText = tt.getText();
 
-                if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
-                    int newMachineInfo = Integer.parseInt(machineInfo.getText());
-                    InHouse newPart = new InHouse(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max),newMachineInfo);
-                    addPart(newPart);
+                if(newPartMin(min) > newPartMax(max)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+                else if(newPartStock(stock) > newPartMax(max) || newPartStock(stock) < newPartMin(min)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
 
+                else if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
+                    int newMachineInfo = Integer.parseInt(machineInfo.getText());
+                    InHouse newInHousePart = new InHouse(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max),newMachineInfo);
+                    addPart(newInHousePart);
+                    newPartsTable.setItems(getAllParts());
                     toastyScene.setRoot(conformationSceneSuccess);
                 }
                 else if(itemTypeText.equals("Outsourced") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)) {
                     String newMachineInfo = machineInfo.getText();
-                    Outsourced newPart = new Outsourced(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max), newMachineInfo);
-                    addPart(newPart);
-
-//                    ++newPartId;
+                    Outsourced newOutsourcedPart = new Outsourced(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max), newMachineInfo);
+                    addPart(newOutsourcedPart);
+                    newPartsTable.setItems(getAllParts());
                     toastyScene.setRoot(conformationSceneSuccess);
                 }
                 else {
@@ -574,19 +1035,63 @@ public class InventorySystem extends Application {
             });
         }
 
-
+    /**
+     *
+     */
         public static Product newProduct;
         //Add Product TextField Use
+
+
+    /**
+     *
+     * @param idSetter
+     * This method accepts a button that will be used to perform some housekeeping on the text-fields
+     * @param id
+     * This method accepts a text-field that will be used to collect the product id
+     * @param name
+     * This method accepts a text-field that will be used to collect the product name
+     * @param price
+     * This method accepts a text-field that will be used to collect the product price
+     * @param stock
+     * This method accepts a text-field that will be used to collect the product stock
+     * @param min
+     * This method accepts a text-field that will be used to collect the product min
+     * @param max
+     * This method accepts a text-field that will be used to collect the product max
+     * @param saveButton
+     * This method accepts a button that will be used to add new part the list as well as verify part data before submission
+     * @param addSelectedPartButton
+     * This method accepts a button that will be used to add parts to the associated parts table
+     * @param removeSelectedPartButton
+     * This method accepts a button that will be used to remove parts from the associated parts table
+     * @param conformationSceneSuccess
+     * This method accepts a grid pane that will be used to display success info
+     * @param conformationSceneFailed
+     * This method accepts a grid pane that will be used to display failed info
+     * @param partsTable
+     * This method accepts components table that will be manipulated in the process af add a new product
+     * @param associatedPartsTable
+     * This method accepts components table that will be manipulated in the process af add a new product
+     * @param productTableView
+     * This method accepts components table that will be manipulated in the process af add a new product
+     */
         public static void saveNewProduct(
                                        Button idSetter, TextField id, TextField name, TextField price, TextField stock, TextField min, TextField max,
                                        Button saveButton, Button addSelectedPartButton, Button removeSelectedPartButton,
                                        GridPane conformationSceneSuccess, GridPane conformationSceneFailed,
-                                       TableView<Part> partsTable, TableView<Part> associatedPartsTable){
+                                       TableView<Part> partsTable, TableView<Part> associatedPartsTable, TableView<Product> productTableView){
 
             idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 id.setPromptText("Auto Generated");
                 id.setDisable(true);
                 id.setEditable(false);
+                name.clear();
+                price.clear();
+                stock.clear();
+                min.clear();
+                max.clear();
+                partsTable.setItems(getAllParts());
+                associatedPartsTable.getItems().clear();
             });
             newProduct = new Product(0,"name",0.0,0,0,0);
             addSelectedPartButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -614,15 +1119,52 @@ public class InventorySystem extends Application {
             });
 
             saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                if(newProductName(name) != null && newProductPrice(price) != 0 && newProductMax(max) != 0){
+
+                if(newProductMin(min) > newProductMax(max)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+               else if(newProductStock(stock) > newProductMax(max) || newProductStock(stock) < newProductMin(min)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+
+
+               else if(newProductName(name) != null && newProductPrice(price) != 0 && newProductMax(max) != 0){
                     newProduct.setId(allProducts.size()+1);
                     newProduct.setName(newProductName(name));
                     newProduct.setPrice(newProductPrice(price));
                     newProduct.setStock(newProductStock(stock));
                     newProduct.setMin(newProductMin(min));
                     newProduct.setMax(newProductMax(max));
-                    System.out.println(newProduct.getAllAssociatedParts());
                     addProduct(newProduct);
+                    productTableView.setItems(getAllProducts());
 
                     toastyScene.setRoot(conformationSceneSuccess);
                 }else {
@@ -632,32 +1174,100 @@ public class InventorySystem extends Application {
             });
         }
 
-        //Delete Part
-        public static void deleteSelectedPart(Button theButton, TableView<Part> partsTable){
+
+    /**
+     *
+     * @param theButton
+     * This method accepts a button that will be used to delete the selected part
+     * @param conformationSceneSuccess
+     * This method accepts a grid pane that will be used to display success info
+     * @param partsTable
+     * This method accepts components table that will be manipulated in the process of removing a part
+     */
+    //Delete Part
+        public static void deleteSelectedPart(Button theButton, GridPane conformationSceneSuccess,TableView<Part> partsTable){
                 theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                     ObservableList<Part> selectedPart = partsTable.getSelectionModel().getSelectedItems();
-                    for (Part hotFilter : selectedPart){
-                        deletePart(hotFilter);
+                    if (partsTable.getSelectionModel().getSelectedItems() != null) {
+                        for (Part hotFilter : selectedPart) {
+                            deletePart(hotFilter);
+                            partsTable.setItems(getAllParts());
+                            toastyScene.setRoot(conformationSceneSuccess);
+                        }
                     }
+
                 });
             }
 
-        //Delete Product
-        public static void deleteSelectedProduct(Button theButton, TableView<Product> productsTable){
+
+    /**
+     *
+     * @param theButton
+     * This method accepts a button that will be used to delete the selected product
+     * @param conformationSceneSuccess
+     * This method accepts a grid pane that will be used to display success info
+     * @param productsTable
+     * This method accepts components table that will be manipulated in the process of removing a product
+     */
+    //Delete Product
+        public static void deleteSelectedProduct(Button theButton, GridPane conformationSceneSuccess,TableView<Product> productsTable){
         theButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             ObservableList<Product> selectedPart = productsTable.getSelectionModel().getSelectedItems();
-            for (Product hotFilter : selectedPart){
-                deleteProduct(hotFilter);
-                hotFilter.getAllAssociatedParts().clear();
+            if (productsTable.getSelectionModel().getSelectedItems() != null) {
+                for (Product hotFilter : selectedPart) {
+                    deleteProduct(hotFilter);
+                    hotFilter.getAllAssociatedParts().clear();
+                    productsTable.setItems(getAllProducts());
+                    toastyScene.setRoot(conformationSceneSuccess);
+                }
             }
         });
     }
 
-
+    /**
+     *
+     */
         public static int existingPartID;
+
+    /**
+     *
+     * @param partType
+     * This method accepts a toggle group that will be used to determine which part type is being added
+     * @param idSetter
+     * This method accepts a button that will be used to perform some housekeeping on the text-fields
+     * @param inHouse
+     * This method accepts a radio button that is part of the toggle group, and it will be used in conjunction with the toggle group to determine the part type
+     * @param outsourced
+     * This method accepts a radio button that is part of the toggle group, and it will be used in conjunction with the toggle group to determine the part type
+     * @param id
+     * This method accepts a text-field that will be used to collect the part id
+     * @param name
+     * This method accepts a text-field that will be used to collect the part name
+     * @param price
+     * This method accepts a text-field that will be used to collect the part price
+     * @param stock
+     * This method accepts a text-field that will be used to collect the part stock
+     * @param min
+     * This method accepts a text-field that will be used to collect the part min
+     * @param max
+     * This method accepts a text-field that will be used to collect the part max
+     * @param machineInfo
+     * This method accepts a text-field that will be used to collect the machine information
+     * @param modifyMachineID
+     * This method accepts the machine info's text label and uses it to change the text displayed when the part type changes
+     * @param saveButton
+     * This method accepts a button that will be used to add new part the list as well as verify part data before submission
+     * @param conformationSceneSuccess
+     * This method accepts a grid pane that will be used to display success info
+     * @param conformationSceneFailed
+     * This method accepts a grid pane that will be used to display failed info
+     * @param partsTableView
+     * This method accepts components table that will be manipulated in the process of updating a part
+     */
         //Modify Part
-        public static void modifyPart(ToggleGroup partType, Button idSetter, TextField id, TextField name, TextField price,
-                                      TextField stock, TextField min, TextField max, TextField machineInfo,
+        public static void modifyPart(ToggleGroup partType, Button idSetter, RadioButton inHouse, RadioButton outsourced,
+                                      TextField id, TextField name, TextField price,
+                                      TextField stock, TextField min, TextField max, TextField machineInfo, Text modifyMachineID,
                                       Button saveButton, GridPane conformationSceneSuccess, GridPane conformationSceneFailed, TableView<Part> partsTableView){
 
             idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -667,16 +1277,69 @@ public class InventorySystem extends Application {
                     id.setText(String.valueOf(existingPartID));
                     id.setEditable(false);
                     id.setDisable(true);
+                    name.setPromptText(partsTableView.getSelectionModel().selectedItemProperty().get().getName());
+                    price.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getPrice()));
+                    stock.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getStock()));
+                    min.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getMin()));
+                    max.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getMax()));
                 }else{
                     toastyScene.setRoot(conformationSceneFailed);
                 }
             });
 
+            partType.selectedToggleProperty().addListener((observableValue, toggle, newToggle) -> {
+                if (newToggle == inHouse){
+                    modifyMachineID.setText("Machine ID");
+                }
+                else if (newToggle == outsourced){
+                    modifyMachineID.setText("Company Name");
+                }
+                else {
+                    modifyMachineID.setText("Machine ID");
+                }
+            });
+
+
             saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 RadioButton tt = (RadioButton) partType.getSelectedToggle();
                 String itemTypeText = tt.getText();
 
-                if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
+                if(modifyPartMin(min) > modifyPartMax(max)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+                else if(modifyPartStock(stock) > modifyPartMax(max) || modifyPartStock(stock) < modifyPartMin(min)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+
+                else if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
                     int newMachineInfo = Integer.parseInt(machineInfo.getText());
                     InHouse newPart = new InHouse(existingPartID,modifyPartName(name),modifyPartPrice(price),modifyPartStock(stock),modifyPartMin(min),modifyPartMax(max),newMachineInfo);
                     updatePart(existingPartID,newPart);
@@ -694,7 +1357,44 @@ public class InventorySystem extends Application {
             });
         }
 
-        public static int existingProductID;
+    /**
+     *
+     */
+    public static int existingProductID;
+
+    /**
+     *
+     * @param id
+     * This method accepts a text-field that will be used to collect the part id
+     * @param name
+     * This method accepts a text-field that will be used to collect the part name
+     * @param price
+     * This method accepts a text-field that will be used to collect the part price
+     * @param stock
+     * This method accepts a text-field that will be used to collect the part stock
+     * @param min
+     * This method accepts a text-field that will be used to collect the part min
+     * @param max
+     * This method accepts a text-field that will be used to collect the part max
+     * @param saveButton
+     * This method accepts a button that will be used to add new part the list as well as verify product data before submission
+     * @param addSelectedPartButton
+     * This method accepts a button that will be used to add parts to the associated parts table
+     * @param removeSelectedPartButton
+     * This method accepts a button that will be used to remove parts from the associated parts table
+     * @param modifyButton
+     * This method accepts a button that will be used to perform some housekeeping on the text-fields
+     * @param conformationSceneSuccess
+     * This method accepts a grid pane that will be used to display success info
+     * @param conformationSceneFailed
+     * This method accepts a grid pane that will be used to display failed info
+     * @param partsTable
+     * This method accepts components table that will be manipulated in the process af add a modified product
+     * @param associatedPartsTable
+     * This method accepts components table that will be manipulated in the process af add a modified product
+     * @param productsTable
+     * This method accepts components table that will be manipulated in the process af add a modified product
+     */
         //Modify Product
         public static void modifyProduct(TextField id, TextField name, TextField price,
                                       TextField stock, TextField min, TextField max,
@@ -707,17 +1407,16 @@ public class InventorySystem extends Application {
                 String testy = String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getId());
                 if(!testy.isEmpty()){
                     existingProductID = productsTable.getSelectionModel().selectedItemProperty().get().getId();
-                    id.setText(String.valueOf(existingProductID));
+                    id.setPromptText(String.valueOf(existingProductID));
                     id.setEditable(false);
                     id.setDisable(true);
-                    name.setPromptText(productsTable.getSelectionModel().selectedItemProperty().get().getName());
-                    price.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getPrice()));
-                    stock.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getStock()));
-                    min.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getMin()));
-                    max.setPromptText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getMax()));
+                    name.setText(productsTable.getSelectionModel().selectedItemProperty().get().getName());
+                    price.setText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getPrice()));
+                    stock.setText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getStock()));
+                    min.setText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getMin()));
+                    max.setText(String.valueOf(productsTable.getSelectionModel().selectedItemProperty().get().getMax()));
 
                     associatedPartsTable.setItems(newProduct.getAllAssociatedParts());
-                    System.out.println(newProduct.getAllAssociatedParts());
                 }else{
                     toastyScene.setRoot(conformationSceneFailed);
                 }
@@ -741,8 +1440,44 @@ public class InventorySystem extends Application {
             });
 
             saveButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                if(modifyProductName(name) != null && modifyProductPrice(price) != 0 && modifyProductMax(max) != 0) {
-//                    Product updatedProduct = new Product(productsTable.getSelectionModel().selectedItemProperty().get().getId(), modifyProductName(name), modifyProductPrice(price), modifyProductStock(stock), modifyProductMin(min), modifyProductMax(max));
+
+                if(modifyProductMin(min) > modifyProductMax(max)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+
+                else if(modifyProductStock(stock) > modifyProductMax(max) || modifyProductStock(stock) < modifyProductMin(min)){
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
+                    errorInfo.setFont(new Font(20));
+                    Button errorInfoCloseButton = new Button("Close");
+                    error.getChildren().add(errorInfo);
+                    error.getChildren().add(errorInfoCloseButton);
+                    GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                    GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    closeProgram(errorInfoCloseButton);
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+
+                else if(modifyProductName(name) != null && modifyProductPrice(price) != 0 && modifyProductMax(max) != 0) {
                     productsTable.getItems().set(productsTable.getSelectionModel().selectedItemProperty().get().getId()-1,newProduct);
                     toastyScene.setRoot(conformationSceneSuccess);
 
@@ -762,6 +1497,14 @@ public class InventorySystem extends Application {
             });
         }
 
+    /**
+     *
+     * @param searchText
+     * This method accepts a string that will be used to find a desired part
+     * @return
+     * This method will return that string in real time to a different method
+     *
+     */
     public static Predicate<Part> createPartPredicate(String searchText){
         return part -> {
             if (searchText == null || searchText.isEmpty()) return true;
@@ -769,6 +1512,14 @@ public class InventorySystem extends Application {
         };
     }
 
+    /**
+     *
+     * @param searchText
+     * This method accepts a string that will be used to find a desired product
+     * @return
+     * This method will return that string in real time to a different method
+     *
+     */
     public static Predicate<Product> createProductPredicate(String searchText){
         return product -> {
             if (searchText == null || searchText.isEmpty()) return true;
@@ -776,18 +1527,42 @@ public class InventorySystem extends Application {
         };
     }
 
+    /**
+     *
+     * @param part
+     * This method uses this parameter to access the part class' methods
+     * @param searchText
+     * This method uses the provided string to find a part that matches the string
+     * @return
+     * This method returns the matching part, if any
+     */
     public static boolean searchFindsPart(Part part, String searchText){
             return (part.getName().toLowerCase().contains(searchText)) ||
                     (Integer.valueOf(part.getId()).toString().equals(searchText));
     }
 
+    /**
+     *
+     * @param product
+     * This method uses this parameter to access the product class' methods
+     * @param searchText
+     * This method uses the provided string to find a product that matches the string
+     * @return
+     * This method returns the matching product, if any
+     */
     public static boolean searchFindsProduct(Product product, String searchText){
         return (product.getName().toLowerCase().contains(searchText)) ||
                 (Integer.valueOf(product.getId()).toString().equals(searchText));
     }
 
 
-
+    /**
+     *
+     * @param searchBar
+     * This method accepts a text-field that will be used to search for a particular part
+     * @param partTableView
+     * This method will display any matching part within a row of the table
+     */
         public static void searchPart(TextField searchBar, TableView<Part> partTableView){
             try{
 
@@ -802,6 +1577,14 @@ public class InventorySystem extends Application {
                 partTableView.setItems(getAllParts());
             }
         }
+
+    /**
+     *
+     * @param searchBar
+     * This method accepts a text-field that will be used to search for a particular product
+     * @param productTableView
+     * This method will display any matching product within a row of the table
+     */
     public static void searchProduct(TextField searchBar, TableView<Product> productTableView){
         try{
 
@@ -1899,7 +2682,29 @@ public class InventorySystem extends Application {
         GridPane.setConstraints(conModifyBadInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
         GridPane.setConstraints(conModifyBadCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
 
+        GridPane partDeletion = new GridPane();
+        Text partDeletionInfo = new Text("Deletion Successful");
+        Button partDeletionCloseButton = new Button("Close");
+        partDeletionInfo.setFont(new Font(20));
+        partDeletion.getChildren().add(partDeletionInfo);
+        partDeletion.getChildren().add(partDeletionCloseButton);
+        sceneChanger(mainMenuGrid,mainMenuGrid,partDeletionCloseButton,partDeletionCloseButton);
+        GridPane.setConstraints(partDeletionInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
+        GridPane.setConstraints(partDeletionCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+
+        GridPane productDeletion = new GridPane();
+        Text productDeletionInfo = new Text("Deletion Successful");
+        Button productDeletionCloseButton = new Button("Close");
+        productDeletionInfo.setFont(new Font(20));
+        productDeletion.getChildren().add(productDeletionInfo);
+        productDeletion.getChildren().add(productDeletionCloseButton);
+        sceneChanger(mainMenuGrid,mainMenuGrid,productDeletionCloseButton,productDeletionCloseButton);
+        GridPane.setConstraints(productDeletionInfo,0,0,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(25));
+        GridPane.setConstraints(productDeletionCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+
         //Event Testing Site
+
+
         InHouse test1 = new InHouse(1, "InHouse Toast 1", 1.11,2,1,2,43);
         InHouse test2 = new InHouse(2,"InHouse Toast 2",1.11,2,1,2,43);
         InHouse test3 = new InHouse(3,"InHouse Toast 3",1.11,2,1,2,43);
@@ -1914,6 +2719,7 @@ public class InventorySystem extends Application {
         addPart(test5);
         addPart(test6);
 
+
         searchPart(partsSearchBar,partsTableView);
         searchPart(addProductSearchBar,associatablePartsTable);
         searchPart(modifyProductSearchBar,associatablePartsTableModify);
@@ -1921,15 +2727,15 @@ public class InventorySystem extends Application {
 
         sceneChanger(addNewPartGrid, mainMenuGrid,addPartButton, cancelNewPart);
         sceneChanger(modifyPartGrid, mainMenuGrid,modifyPartButton, cancelModifiedPart);
-        saveNewPart(partType,addPartButton,addPartIdTextField,addPartNameTextField,addPartPriceTextField,addPartStockTextField,addPartMinTextField,addPartMaxTextField,addPartMachineIdText,saveNewPart,conAddGood, conAddBad);
-        modifyPart(modifyPartType, modifyPartButton,modifyPartIdTextField,modifyPartNameTextField,modifyPartPriceTextField,modifyPartStockTextField,modifyPartMinTextField,modifyPartMaxTextField,modifyPartMachineIdTextField,saveModifiedPart,conModifyGood, conModifyBad,partsTableView);
-        deleteSelectedPart(deletePartButton,partsTableView);
+        saveNewPart(partType, inHousePart, outsourcedPart,addPartButton,addPartIdTextField,addPartNameTextField,addPartPriceTextField,addPartStockTextField,addPartMinTextField,addPartMaxTextField,addPartMachineIdText, machineIdTitleText,saveNewPart,conAddGood, conAddBad, partsTableView);
+        modifyPart(modifyPartType, modifyPartButton,modifyInHousePart,modifyOutsourcedPart,modifyPartIdTextField,modifyPartNameTextField,modifyPartPriceTextField,modifyPartStockTextField,modifyPartMinTextField,modifyPartMaxTextField,modifyPartMachineIdTextField, modifyMachineIdTitleText,saveModifiedPart,conModifyGood, conModifyBad,partsTableView);
+        deleteSelectedPart(deletePartButton, partDeletion,partsTableView);
 
         sceneChanger(addProductMenuGrid, mainMenuGrid,addProductButton, cancelNewProduct);
         sceneChanger(modifyProductMenuGrid, mainMenuGrid,modifyProductButton, cancelModifiedProduct);
-        saveNewProduct(addProductButton,addProductIdTextField,addProductNameTextField,addProductPriceTextField,addProductStockTextField,addProductMinTextField,addProductMaxTextField,saveNewProduct,addAssociatedPartButton,removeAssociatedPartButton,conAddGood, conAddBad,associatablePartsTable,associatedPartsTable);
+        saveNewProduct(addProductButton,addProductIdTextField,addProductNameTextField,addProductPriceTextField,addProductStockTextField,addProductMinTextField,addProductMaxTextField,saveNewProduct,addAssociatedPartButton,removeAssociatedPartButton,conAddGood, conAddBad,associatablePartsTable,associatedPartsTable, productsTableView);
         modifyProduct(modifyProductIdTextField,modifyProductNameTextField,modifyProductPriceTextField,modifyProductStockTextField,modifyProductMinTextField,modifyProductMaxTextField,saveModifiedProduct,addAssociatedPartButtonModify,removeAssociatedPartButtonModify,modifyProductButton,conModifyGood,conModifyBad,partsTableView,associatedPartsTableModify,productsTableView);
-        deleteSelectedProduct(deleteProductButton,productsTableView);
+        deleteSelectedProduct(deleteProductButton,productDeletion,productsTableView);
 
         closeProgram(exitButton);
 
@@ -1944,6 +2750,10 @@ public class InventorySystem extends Application {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    /**
+     *
+     * @param args
+     */
 
     public static void main(String[] args) {
             launch();

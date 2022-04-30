@@ -20,12 +20,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 
 import static javafx.geometry.HPos.CENTER;
 import static javafx.geometry.HPos.LEFT;
 
+/**
+ * The java doc folder can be found at this path:  src/main/resources/org/openjfx/software_1_fx_assignment
+ *
+ *
+ * A future enhancement that will be made to improve the functionality of the code will be separating the UI elements from the functional elements of the code as well as adding security by implementing a simple login form that will be displayed on runtime
+ */
 public class InventorySystem extends Application {
 
         private static ObservableList<Part> allParts = FXCollections.observableArrayList();
@@ -908,6 +915,8 @@ public class InventorySystem extends Application {
             });
         }
 
+    public static ObservableList<InHouse> inHouseParts = FXCollections.observableArrayList();
+    public static ObservableList<Outsourced> outsourcedParts = FXCollections.observableArrayList();
     /**
      *
      * @param itemType
@@ -944,6 +953,7 @@ public class InventorySystem extends Application {
      * This method accepts components table that will be manipulated in the process af add a new part
      */
         //Add Part TextField Use
+
         public static void saveNewPart(ToggleGroup itemType, RadioButton inHouse, RadioButton outsourced,
                                        Button idSetter, TextField id, TextField name, TextField price,
                                        TextField stock, TextField min, TextField max, TextField machineInfo, Text addMachineId,
@@ -1017,15 +1027,19 @@ public class InventorySystem extends Application {
                 else if (itemTypeText.equals("In-House") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)){
                     int newMachineInfo = Integer.parseInt(machineInfo.getText());
                     InHouse newInHousePart = new InHouse(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max),newMachineInfo);
+                    newInHousePart.setMachineId(newMachineInfo);
                     addPart(newInHousePart);
                     newPartsTable.setItems(getAllParts());
+                    inHouseParts.add(newInHousePart);
                     toastyScene.setRoot(conformationSceneSuccess);
                 }
                 else if(itemTypeText.equals("Outsourced") && (newPartName(name) != null && newPartPrice(price) != 0 && newPartMax(max) != 0)) {
                     String newMachineInfo = machineInfo.getText();
                     Outsourced newOutsourcedPart = new Outsourced(allParts.size()+1, newPartName(name), newPartPrice(price), newPartStock(stock), newPartMin(min), newPartMax(max), newMachineInfo);
+                    newOutsourcedPart.setCompanyName(newMachineInfo);
                     addPart(newOutsourcedPart);
                     newPartsTable.setItems(getAllParts());
+                    outsourcedParts.add(newOutsourcedPart);
                     toastyScene.setRoot(conformationSceneSuccess);
                 }
                 else {
@@ -1035,9 +1049,7 @@ public class InventorySystem extends Application {
             });
         }
 
-    /**
-     *
-     */
+
         public static Product newProduct;
         //Add Product TextField Use
 
@@ -1079,7 +1091,7 @@ public class InventorySystem extends Application {
                                        Button idSetter, TextField id, TextField name, TextField price, TextField stock, TextField min, TextField max,
                                        Button saveButton, Button addSelectedPartButton, Button removeSelectedPartButton,
                                        GridPane conformationSceneSuccess, GridPane conformationSceneFailed,
-                                       TableView<Part> partsTable, TableView<Part> associatedPartsTable, TableView<Product> productTableView){
+                                       TableView<Part> partsTable, TableView<Part> associatedPartsTable, TableView<Product> productTableView, TextField searchbar){
 
             idSetter.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 id.setPromptText("Auto Generated");
@@ -1090,7 +1102,6 @@ public class InventorySystem extends Application {
                 stock.clear();
                 min.clear();
                 max.clear();
-                partsTable.setItems(getAllParts());
                 associatedPartsTable.getItems().clear();
             });
             newProduct = new Product(0,"name",0.0,0,0,0);
@@ -1164,12 +1175,14 @@ public class InventorySystem extends Application {
                     newProduct.setMin(newProductMin(min));
                     newProduct.setMax(newProductMax(max));
                     addProduct(newProduct);
-                    productTableView.setItems(getAllProducts());
-
+                    productTableView.setItems(allProducts);
+                    searchProduct(searchbar,productTableView);
                     toastyScene.setRoot(conformationSceneSuccess);
                 }else {
                     toastyScene.setRoot(conformationSceneFailed);
                 }
+
+
 
             });
         }
@@ -1277,11 +1290,20 @@ public class InventorySystem extends Application {
                     id.setText(String.valueOf(existingPartID));
                     id.setEditable(false);
                     id.setDisable(true);
-                    name.setPromptText(partsTableView.getSelectionModel().selectedItemProperty().get().getName());
-                    price.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getPrice()));
-                    stock.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getStock()));
-                    min.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getMin()));
-                    max.setPromptText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getMax()));
+                    name.setText(partsTableView.getSelectionModel().selectedItemProperty().get().getName());
+                    price.setText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getPrice()));
+                    stock.setText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getStock()));
+                    min.setText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getMin()));
+                    max.setText(String.valueOf(partsTableView.getSelectionModel().selectedItemProperty().get().getMax()));
+
+                    if(Objects.equals(partsTableView.getSelectionModel().selectedItemProperty().get().getName(), inHouseParts.get(existingPartID - 1).getName())){
+                        machineInfo.setText(String.valueOf(inHouseParts.get(existingPartID-1).getMachineId()));
+                    }
+                    else if(Objects.equals(partsTableView.getSelectionModel().selectedItemProperty().get().getName(), outsourcedParts.get(existingPartID - 1).getName())){
+                        machineInfo.setText(String.valueOf(outsourcedParts.get(existingPartID-1).getCompanyName()));
+                    }
+
+
                 }else{
                     toastyScene.setRoot(conformationSceneFailed);
                 }
@@ -1573,7 +1595,7 @@ public class InventorySystem extends Application {
                         partsFilteredList.setPredicate(createPartPredicate(newValue))));
 
             }
-            catch (Exception e){
+            catch (NullPointerException e){
                 partTableView.setItems(getAllParts());
             }
         }
@@ -1595,14 +1617,13 @@ public class InventorySystem extends Application {
                     productsFilteredList.setPredicate(createProductPredicate(newValue))));
 
         }
-        catch (Exception e){
+        catch (NullPointerException e){
             productTableView.setItems(getAllProducts());
         }
     }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
     @Override
@@ -1697,7 +1718,7 @@ public class InventorySystem extends Application {
         //Part Table Setup
 
             TableView<Part> partsTableView;
-
+ 
             TableColumn<Part, Integer> idColumn = new TableColumn<>("ID");
             idColumn.setMinWidth(115);
             idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -1722,7 +1743,6 @@ public class InventorySystem extends Application {
             maxColumn.setMinWidth(115);
             maxColumn.setCellValueFactory(new PropertyValueFactory<>("max"));
 
-
             partsTableView = new TableView<>();
             partsTableView.setItems(getAllParts());
             partsTableView.getColumns().add(idColumn);
@@ -1732,9 +1752,6 @@ public class InventorySystem extends Application {
             partsTableView.getColumns().add(minColumn);
             partsTableView.getColumns().add(maxColumn);
             partsTable.getChildren().add(partsTableView);
-
-
-
 
 
         //Product Table Setup
@@ -2192,13 +2209,13 @@ public class InventorySystem extends Application {
                 associatableProductStockColumn.setMinWidth(115);
                 associatableProductStockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
 
+                associatablePartsTableGrid.getChildren().add(associatablePartsTable);
                 associatablePartsTable.setItems(getAllParts());
                 associatablePartsTable.getColumns().add(associatableProductIdColumn);
                 associatablePartsTable.getColumns().add(associatableProductNameColumn);
                 associatablePartsTable.getColumns().add(associatableProductPriceColumn);
                 associatablePartsTable.getColumns().add(associatableProductStockColumn);
 
-                associatablePartsTableGrid.getChildren().add(associatablePartsTable);
                 associatablePartsGrid.getChildren().addAll(addProductSearchBar, associatablePartsTableGrid, addAssociatedPartButton);
 
                 addNewProductCleanerFixerUpper.getChildren().add(associatablePartsGrid);
@@ -2704,22 +2721,6 @@ public class InventorySystem extends Application {
 
         //Event Testing Site
 
-
-        InHouse test1 = new InHouse(1, "InHouse Toast 1", 1.11,2,1,2,43);
-        InHouse test2 = new InHouse(2,"InHouse Toast 2",1.11,2,1,2,43);
-        InHouse test3 = new InHouse(3,"InHouse Toast 3",1.11,2,1,2,43);
-        InHouse test4 = new InHouse(4, "InHouse Toast 4",1.11,2,1,2,43);
-        InHouse test5 = new InHouse(5,"InHouse Toast 5",1.11,2,1,2,43);
-        InHouse test6 = new InHouse(6, "InHouse Toast 6",1.11,2,1,2,43);
-
-        addPart(test1);
-        addPart(test2);
-        addPart(test3);
-        addPart(test4);
-        addPart(test5);
-        addPart(test6);
-
-
         searchPart(partsSearchBar,partsTableView);
         searchPart(addProductSearchBar,associatablePartsTable);
         searchPart(modifyProductSearchBar,associatablePartsTableModify);
@@ -2733,7 +2734,7 @@ public class InventorySystem extends Application {
 
         sceneChanger(addProductMenuGrid, mainMenuGrid,addProductButton, cancelNewProduct);
         sceneChanger(modifyProductMenuGrid, mainMenuGrid,modifyProductButton, cancelModifiedProduct);
-        saveNewProduct(addProductButton,addProductIdTextField,addProductNameTextField,addProductPriceTextField,addProductStockTextField,addProductMinTextField,addProductMaxTextField,saveNewProduct,addAssociatedPartButton,removeAssociatedPartButton,conAddGood, conAddBad,associatablePartsTable,associatedPartsTable, productsTableView);
+        saveNewProduct(addProductButton,addProductIdTextField,addProductNameTextField,addProductPriceTextField,addProductStockTextField,addProductMinTextField,addProductMaxTextField,saveNewProduct,addAssociatedPartButton,removeAssociatedPartButton,conAddGood, conAddBad,associatablePartsTable,associatedPartsTable, productsTableView, productsSearchBar);
         modifyProduct(modifyProductIdTextField,modifyProductNameTextField,modifyProductPriceTextField,modifyProductStockTextField,modifyProductMinTextField,modifyProductMaxTextField,saveModifiedProduct,addAssociatedPartButtonModify,removeAssociatedPartButtonModify,modifyProductButton,conModifyGood,conModifyBad,partsTableView,associatedPartsTableModify,productsTableView);
         deleteSelectedProduct(deleteProductButton,productDeletion,productsTableView);
 
@@ -2753,6 +2754,11 @@ public class InventorySystem extends Application {
     /**
      *
      * @param args
+     * This method runs the program
+     *
+     *
+     * A future enhancement that will be made to improve the functionality of the code will be separating the UI elements
+     * from the functional elements of the code as well as adding security by implementing a simple login form that will be displayed on runtime
      */
 
     public static void main(String[] args) {

@@ -6,11 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="software_1_FX_Assignment" />
+        <module name="software_1_FX_assignment_rework" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="software_1_FX_Assignment" target="17" />
+      <module name="software_1_FX_assignment_rework" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

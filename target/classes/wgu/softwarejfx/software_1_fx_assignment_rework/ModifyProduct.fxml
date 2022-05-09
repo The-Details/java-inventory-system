@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="726.0" prefWidth="1089.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.InventoryController">
+    <children>
+        <GridPane fx:id="modifyProductMenu" hgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="267.0943455436385" minWidth="10.0" prefWidth="196.45286200996333" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="539.7735768444139" minWidth="10.0" prefWidth="539.7735768444139" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="72.83018892369014" minHeight="10.0" prefHeight="64.6792489822839" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="155.33961555804183" minHeight="10.0" prefHeight="125.88679546764988" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="189.28301895483838" minHeight="10.0" prefHeight="86.50944938944869" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="97.81132480706896" minHeight="5.094364338729235" prefHeight="63.05662884819168" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="136.26413362583855" minHeight="10.0" prefHeight="119.20752822262165" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="181.58493709054972" minHeight="10.0" prefHeight="114.86788982800141" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="65.43393343052605" minHeight="10.0" prefHeight="27.11317417230339" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="68.7735940750573" minHeight="10.0" prefHeight="54.283054524276054" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <GridPane GridPane.columnIndex="3">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <TextField promptText="Search by Part ID or Name" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" />
+                    </children>
+                </GridPane>
+                <GridPane GridPane.columnIndex="3" GridPane.rowIndex="3">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="addModifiedAssociatedPart" mnemonicParsing="false" text="Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                    </children>
+                </GridPane>
+                <GridPane vgap="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Button fx:id="removeModifiedAssociatedPart" mnemonicParsing="false" prefHeight="25.0" prefWidth="152.0" text="Remove Associated Part" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                        <GridPane GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.98117913381625" minWidth="10.0" prefWidth="90.07553948537875" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="109.99998519207597" minWidth="10.0" prefWidth="90.0754093864119" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Button fx:id="saveModifiedProductButton" mnemonicParsing="false" text="Save" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                <Button fx:id="cancelModifiedProductButton" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                            </children>
+                        </GridPane>
+                    </children>
+                </GridPane>
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextField GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <GridPane GridPane.columnIndex="2" GridPane.rowIndex="5">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <TextField GridPane.columnIndex="1" />
+                        <Label text="Min" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                    <padding>
+                        <Insets bottom="15.0" right="30.0" top="15.0" />
+                    </padding>
+                </GridPane>
+                <Label prefHeight="24.0" prefWidth="158.0" text="Modify Product" GridPane.columnSpan="2">
+                    <font>
+                        <Font name="SansSerif Regular" size="20.0" />
+                    </font>
+                </Label>
+                <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="ID" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </GridPane>
+                <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Name" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </GridPane>
+                <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Inv." GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </GridPane>
+                <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Price" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </GridPane>
+                <GridPane GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <Label text="Max" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                            <font>
+                                <Font size="17.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </GridPane>
+                <TableView fx:id="allPartsModifiedProductMenu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="C1" />
+                        <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                </TableView>
+                <TableView fx:id="associatedModifiedProductMenu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.rowSpan="2">
+                    <columns>
+                        <TableColumn prefWidth="75.0" text="C1" />
+                        <TableColumn prefWidth="75.0" text="C2" />
+                    </columns>
+                </TableView>
+            </children>
+            <padding>
+                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+        </GridPane>
+    </children>
+</AnchorPane>

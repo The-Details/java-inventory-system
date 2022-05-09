@@ -1,13 +1,8 @@
-module org.openjfx.software_1_fx_assignment {
+module wgu.softwarejfx.software_1_fx_assignment_rework {
     requires javafx.controls;
     requires javafx.fxml;
 
-    requires com.dlsc.formsfx;
-    requires validatorfx;
-    requires org.kordamp.ikonli.javafx;
 
-    opens org.openjfx.software_1_fx_assignment to javafx.fxml;
-    exports org.openjfx.software_1_fx_assignment;
-//    exports;
-//    opens to
+    opens wgu.softwarejfx.software_1_fx_assignment_rework to javafx.fxml;
+    exports wgu.softwarejfx.software_1_fx_assignment_rework;
 }

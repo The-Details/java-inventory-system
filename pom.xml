@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.openjfx</groupId>
-    <artifactId>software_1_FX_Assignment</artifactId>
+    <groupId>wgu.softwarejfx</groupId>
+    <artifactId>software_1_FX_assignment_rework</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>software_1_FX_Assignment</name>
+    <name>software_1_FX_assignment_rework</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,33 +25,7 @@
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.dlsc.formsfx</groupId>
-            <artifactId>formsfx-core</artifactId>
-            <version>11.3.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>net.synedra</groupId>
-            <artifactId>validatorfx</artifactId>
-            <version>0.1.13</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.openjfx</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.kordamp.ikonli</groupId>
-            <artifactId>ikonli-javafx</artifactId>
-            <version>12.2.0</version>
-        </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -87,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                org.openjfx.software_1_fx_assignment/org.openjfx.software_1_fx_assignment.InventorySystem
+                                wgu.softwarejfx.software_1_fx_assignment_rework/wgu.softwarejfx.software_1_fx_assignment_rework.Inventory
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

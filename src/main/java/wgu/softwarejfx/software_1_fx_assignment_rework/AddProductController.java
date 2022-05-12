@@ -3,6 +3,7 @@ package wgu.softwarejfx.software_1_fx_assignment_rework;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.VPos;
 import javafx.scene.Parent;
@@ -19,64 +20,122 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
+import java.util.ResourceBundle;
 
 import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.allProductsTable;
+import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.*;
 
-public class AddProductController {
+public class AddProductController implements Initializable {
 
     @FXML
-    private static Button saveNewProductButton;
+    private Button saveNewProductButton;
     @FXML
-    private static Button cancelNewProductButton;
+    private Button cancelNewProductButton;
     @FXML
-    private static Button addNewAssociatedPart;
+    private Button addNewAssociatedPart;
     @FXML
-    private static Button removeNewAssociatedPart;
+    private Button removeNewAssociatedPart;
     @FXML
-    private static TableView<Part> allPartsNewProductMenu;
+    private TableView<Part> allPartsNewProductMenu;
     @FXML
-    private static TableView<Part> associatedNewProductMenu;
+    private TableView<Part> associatedNewProductMenu;
     @FXML
-    private static Popup conformationMessage;
+    private Popup conformationMessage;
     @FXML
-    private static Popup errorMessage;
+    private Popup errorMessage;
     @FXML
-    private static TextField newProductId;
+    private TextField newProductId;
     @FXML
-    private static TextField newProductName;
+    private TextField newProductName;
     @FXML
-    private static TextField newProductStock;
+    private TextField newProductStock;
     @FXML
-    private static TextField newProductPrice;
+    private TextField newProductPrice;
     @FXML
-    private static TextField newProductMax;
+    private TextField newProductMax;
     @FXML
-    private static TextField newProductMin;
-    public static Product newProduct;
-    public static int newId;
+    private TextField newProductMin;
+    private Product newProduct;
 
-    public static void newProductTextFieldSetup(){
+    protected void newProductTextFieldSetup(){
         newProductId.setPromptText("Auto Generated");
         newProductId.setDisable(true);
         newProductId.setEditable(false);
-        newProductName.clear();
-        newProductPrice.clear();
-        newProductStock.clear();
-        newProductMin.clear();
-        newProductMax.clear();
     }
 
     @FXML
-    void onSaveModifiedProductButtonClick() throws IOException {
-        setNewProductTextFieldData();
+    protected void onSaveNewProductButtonClick(MouseEvent event) throws IOException {
+            if(newProductName.getText().isEmpty() || newProductPrice.getText().isEmpty()
+                    || newProductStock.getText().isEmpty() || newProductMax.getText().isEmpty()
+                    || newProductMin.getText().isEmpty()){
+
+                GridPane conformation = new GridPane();
+                Text conformationInfo = new Text("Part Successfully Removed");
+                conformationInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
+                conformation.getChildren().add(conformationInfo);
+                conformation.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+                Stage popUp = new Stage();
+                Scene conformationScene = new Scene(conformation);
+                popUp.setTitle("Conformation");
+                popUp.setScene(conformationScene);
+                popUp.sizeToScene();
+                popUp.show();
+            }
+            if(Integer.parseInt(newProductMin.getText()) > Integer.parseInt(newProductMax.getText())){
+                GridPane error = new GridPane();
+                Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
+                errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
+                error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+                Stage popUp = new Stage();
+                Scene errorScene = new Scene(error);
+                popUp.setTitle("Error");
+                popUp.setScene(errorScene);
+                popUp.sizeToScene();
+                popUp.show();
+            }
+
+            else if(Integer.parseInt(newProductStock.getText()) > Integer.parseInt(newProductMax.getText()) || Integer.parseInt(newProductStock.getText()) < Integer.parseInt(newProductMin.getText())){
+                GridPane error = new GridPane();
+                Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
+                errorInfo.setFont(new Font(20));
+                Button errorInfoCloseButton = new Button("Close");
+                error.getChildren().add(errorInfo);
+                error.getChildren().add(errorInfoCloseButton);
+                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
+                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+                Stage popUp = new Stage();
+                Scene errorScene = new Scene(error);
+                popUp.setTitle("Error");
+                popUp.setScene(errorScene);
+                popUp.sizeToScene();
+                popUp.show();
+
+            }
+
+            else if(!newProductName.getText().isEmpty() && Double.parseDouble(newProductPrice.getText()) != 0 && Integer.parseInt(newProductMax.getText()) != 0) {
+                saveNewProductData();
+                saveNewProduct(event);
+            }
+
+
     }
 
-    public static void setNewProductTextFieldData(){
+    protected void saveNewProductData(){
         newProduct = new Product(0,"name",0.0,0,0,0);
-        newProduct.setId(newId);
+        newProduct.setId(selectedProduct());
         newProduct.setName(newProductName.getText());
         newProduct.setPrice(Double.parseDouble(newProductPrice.getText()));
         newProduct.setStock(Integer.parseInt(newProductStock.getText()));
@@ -84,15 +143,9 @@ public class AddProductController {
         newProduct.setMax(Integer.parseInt(newProductMax.getText()));
         addProduct(newProduct);
         allProductsTable.setItems(getAllProducts());
-        ++newId;
     }
 
-    @FXML
-    void onCancelModifiedProductButtonClick(MouseEvent event) throws IOException{
-        cancelNewProduct(event);
-    }
-
-    protected static void cancelNewProduct (MouseEvent event) throws IOException{
+    protected void saveNewProduct(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -101,7 +154,20 @@ public class AddProductController {
     }
 
     @FXML
-    protected static void addAssociatedPartForModifiedProduct(){
+    protected void onCancelModifiedProductButtonClick(MouseEvent event) throws IOException{
+        cancelNewProduct(event);
+    }
+
+    protected void cancelNewProduct (MouseEvent event) throws IOException{
+        Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
+        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    protected void addAssociatedPartForModifiedProduct(){
         ObservableList<Part> selectedPart = allPartsNewProductMenu.getSelectionModel().getSelectedItems();
         for(Part hotFilter : selectedPart){
             newProduct.addAssociatedParts(hotFilter);
@@ -110,11 +176,16 @@ public class AddProductController {
     }
 
     @FXML
-    protected static void removeAssociatedPartForModifiedProduct(){
+    protected void removeAssociatedPartForModifiedProduct(){
         ObservableList<Part> selectedPart = associatedNewProductMenu.getSelectionModel().getSelectedItems();
         for(Part hotFilter : selectedPart){
             newProduct.deleteAssociatedPart(hotFilter);
         }
         associatedNewProductMenu.setItems(newProduct.getAllAssociatedParts());
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        newProductTextFieldSetup();
     }
 }

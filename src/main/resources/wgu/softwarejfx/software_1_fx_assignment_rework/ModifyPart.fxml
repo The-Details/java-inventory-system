@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="550.0" minWidth="450.0" prefHeight="700.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.InventoryController">
+<AnchorPane minHeight="550.0" minWidth="450.0" prefHeight="700.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.ModifyPartController">
     <children>
         <GridPane hgap="15.0" prefHeight="700.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -39,7 +39,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <RadioButton fx:id="modifiedInHousePart" mnemonicParsing="false" text="In-House">
+                        <RadioButton fx:id="modifiedInHousePartButton" mnemonicParsing="false" onMouseClicked="#onModifiedInHouseRadioPart" text="In-House">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -54,7 +54,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <RadioButton fx:id="modifiedOutsourcedPart" mnemonicParsing="false" text="Outsourced">
+                        <RadioButton fx:id="modifiedOutsourcedPartButton" mnemonicParsing="false" onMouseClicked="#onModifiedOutsourcedRadioPart" text="Outsourced">
                             <font>
                                 <Font size="14.0" />
                             </font>
@@ -71,7 +71,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1" />
+                        <TextField fx:id="modifiedPartId" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -84,7 +84,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1" />
+                        <TextField fx:id="modifiedPartName" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
@@ -97,7 +97,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1" />
+                        <TextField fx:id="modifiedPartStock" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -110,7 +110,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1" />
+                        <TextField fx:id="modifiedPartPrice" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="1" GridPane.rowIndex="5">
@@ -123,7 +123,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1" />
+                        <TextField fx:id="modifiedPartMax" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="1" GridPane.rowIndex="6">
@@ -136,7 +136,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1" />
+                        <TextField fx:id="modifiedPartMachineInfoTextField" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="3" GridPane.rowIndex="5">
@@ -149,7 +149,7 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <TextField GridPane.rowIndex="1">
+                        <TextField fx:id="modifiedPartMin" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets right="10.0" />
                             </GridPane.margin>
@@ -165,8 +165,8 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="cancelModifiedPartButton" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                        <Button fx:id="saveModifiedPartButton" mnemonicParsing="false" text="Save" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                        <Button fx:id="cancelModifiedPartButton" mnemonicParsing="false" onMouseClicked="#onCancelModifiedPartButtonClick" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                        <Button fx:id="saveModifiedPartButton" mnemonicParsing="false" onMouseClicked="#onSaveModifiedPartButtonClick" text="Save" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
                     </children>
                 </GridPane>
                 <Label text="Modify Part">
@@ -272,7 +272,7 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label text="Machine ID" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                        <Label fx:id="modifiedPartMachineInfoLabel" text="Machine ID" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                             <font>
                                 <Font size="17.0" />
                             </font>

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="597.0" prefWidth="1007.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController">
+<fx:root nodeOrientation="LEFT_TO_RIGHT" prefHeight="597.0" prefWidth="1007.0" type="AnchorPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController">
    <GridPane fx:id="mainMenu" alignment="CENTER" hgap="50.0" layoutX="28.0" layoutY="23.0" prefHeight="550.0" prefWidth="950.0" vgap="20.0">
       <columnConstraints>
          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -87,8 +87,10 @@
          </columnConstraints>
          <TableView fx:id="allPartsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
             <columns>
-               <TableColumn prefWidth="75.0" text="C1" />
-               <TableColumn prefWidth="75.0" text="C2" />
+               <TableColumn fx:id="allPartsIdCol" minWidth="115.0" prefWidth="115.0" text="ID" />
+               <TableColumn fx:id="allPartsNameCol" minWidth="115.0" prefWidth="115.0" text="Name" />
+               <TableColumn fx:id="allPartsStockCol" minWidth="115.0" prefWidth="115.0" text="Stock" />
+               <TableColumn fx:id="allPartsPriceCol" minWidth="115.0" prefWidth="115.0" text="Price" />
             </columns>
          </TableView>
       </GridPane>
@@ -102,8 +104,10 @@
          </columnConstraints>
          <TableView fx:id="allProductsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.hgrow="SOMETIMES" GridPane.valignment="CENTER" GridPane.vgrow="SOMETIMES">
             <columns>
-               <TableColumn prefWidth="75.0" text="C1" />
-               <TableColumn prefWidth="75.0" text="C2" />
+               <TableColumn fx:id="allProductsIdCol" minWidth="115.0" prefWidth="115.0" text="ID" />
+               <TableColumn fx:id="allProductsNameCol" minWidth="115.0" prefWidth="115.0" text="Name" />
+               <TableColumn fx:id="allProductsStockCol" minWidth="115.0" prefWidth="115.0" text="Stock" />
+               <TableColumn fx:id="allProductsPriceCol" minWidth="115.0" prefWidth="115.0" text="Price" />
             </columns>
          </TableView>
       </GridPane>
@@ -149,7 +153,7 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <Button fx:id="deletePartButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Delete" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+               <Button fx:id="deletePartButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#deleteSelectedPart" text="Delete" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
             </GridPane>
          </GridPane>
       </GridPane>
@@ -195,7 +199,7 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <Button fx:id="deleteProductButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Delete" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+               <Button fx:id="deleteProductButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#deleteSelectedProduct" text="Delete" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
             </GridPane>
          </GridPane>
       </GridPane>
@@ -210,4 +214,4 @@
          <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onExitButtonClick" text="Exit" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
       </GridPane>
    </GridPane>
-</AnchorPane>
+</fx:root>

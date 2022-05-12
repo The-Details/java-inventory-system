@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane minHeight="550.0" minWidth="450.0" prefHeight="700.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController">
+<AnchorPane minHeight="550.0" minWidth="450.0" prefHeight="700.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController">
    <children>
-      <GridPane hgap="15.0" prefHeight="700.0" prefWidth="650.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <GridPane hgap="15.0" prefHeight="700.0" prefWidth="750.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.41504549411508" minWidth="10.0" prefWidth="151.05664003833266" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.41504549411508" minWidth="10.0" prefWidth="182.84904870549" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.8302038348246" minWidth="10.0" prefWidth="152.96228420628324" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.41504549411508" minWidth="10.0" prefWidth="153.41508826652702" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="226.41504549411508" minWidth="10.0" prefWidth="151.83015885697705" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="260.8302038348246" minWidth="10.0" prefWidth="106.54720986767927" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="213.37736556316975" minWidth="10.0" prefWidth="167.07536408807022" />
         </columnConstraints>
         <rowConstraints>
@@ -39,7 +39,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <RadioButton fx:id="newInHousePartButton" mnemonicParsing="false" text="In-House">
+                  <RadioButton fx:id="newInHousePartButton" mnemonicParsing="false" onAction="#onNewInHouseRadioPart" text="In-House">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -54,14 +54,14 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <RadioButton fx:id="newOutsourcedPartButton" mnemonicParsing="false" text="Outsourced">
+                  <RadioButton fx:id="newOutsourcedPartButton" mnemonicParsing="false" onAction="#onNewOutsourcedRadioPart" text="Outsourced">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </RadioButton>
                </children>
             </GridPane>
-            <GridPane fx:id="newPartId" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
@@ -71,7 +71,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField GridPane.rowIndex="1" />
+                  <TextField fx:id="newPartId" GridPane.rowIndex="1" />
                </children>
             </GridPane>
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -165,8 +165,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="cancelNewPartButton" mnemonicParsing="false" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
-                  <Button fx:id="saveNewPartButton" mnemonicParsing="false" text="Save" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+                  <Button fx:id="cancelNewPartButton" mnemonicParsing="false" onMouseClicked="#onCancelNewPartButtonClick" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                  <Button fx:id="saveNewPartButton" mnemonicParsing="false" onMouseClicked="#onSaveNewPartButtonClick" text="Save" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
             <Label text="Add Part">

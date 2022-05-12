@@ -3,6 +3,7 @@ package wgu.softwarejfx.software_1_fx_assignment_rework;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -12,55 +13,75 @@ import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.AddProductController.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.ModifyPartController.*;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.ModifyProductController.*;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.SceneController.*;
 
-public class MainMenuController {
+public class MainMenuController implements Initializable {
 
     @FXML
-    public static TextField partsSearchBar;
+    public TextField partsSearchBar;
     @FXML
-    public static TextField productsSearchBar;
+    public TextField productsSearchBar;
     @FXML
-    public static TableView<Part> allPartsTable;
+    public static TableView<Part> allPartsTable = new TableView<>();
     @FXML
     public static TableView<Product> allProductsTable;
     @FXML
-    private static Button addPartButton;
+    private Button addPartButton;
     @FXML
-    private static Button modifyPartButton;
+    private Button modifyPartButton;
     @FXML
-    private static Button deletePartButton;
+    private Button deletePartButton;
     @FXML
-    private static Button addProductButton;
+    private Button addProductButton;
     @FXML
-    private static Button modifyProductButton;
+    private Button modifyProductButton;
     @FXML
-    private static Button deleteProductButton;
+    private Button deleteProductButton;
     @FXML
-    private static Button exitButton;
+    private Button exitButton;
     @FXML
-    private static GridPane mainMenu;
+    private GridPane mainMenu;
     @FXML
-    private static GridPane addPartMenu;
+    private GridPane addPartMenu;
     @FXML
-    private static GridPane modifyPartMenu;
+    private GridPane modifyPartMenu;
     @FXML
-    private static GridPane addProductMenu;
+    private GridPane addProductMenu;
     @FXML
-    private static GridPane modifyProductMenu;
+    private GridPane modifyProductMenu;
     @FXML
-    private static Popup conformationMessage;
+    private Popup conformationMessage;
     @FXML
-    private static Popup errorMessage;
-
-
-
+    private Popup errorMessage;
+    @FXML
+    private TableColumn<Part, Integer> allPartsIdCol;
+    @FXML
+    private TableColumn<Part, Integer> allPartsNameCol;
+    @FXML
+    private TableColumn<Part, Integer> allPartsStockCol;
+    @FXML
+    private TableColumn<Part, Integer> allPartsPriceCol;
+    @FXML
+    private TableColumn<Part, Integer> allPartsMinCol;
+    @FXML
+    private TableColumn<Part, Integer> allPartsMaxCol;
+    @FXML
+    private TableColumn<Product, Integer> allProductsIdCol;
+    @FXML
+    private TableColumn<Product, Integer> allProductsNameCol;
+    @FXML
+    private TableColumn<Product, Integer> allProductsStockCol;
+    @FXML
+    private TableColumn<Product, Integer> allProductsPriceCol;
+    @FXML
+    private TableColumn<Product, Integer> allProductsMinCol;
+    @FXML
+    private TableColumn<Product, Integer> allProductsMaxCol;
 
 
     @FXML
@@ -71,86 +92,90 @@ public class MainMenuController {
     }
 
     @FXML
-    void onAddNewPartButtonClick(MouseEvent event) throws IOException{
-        newPartTextFieldSetup();
+    protected void onAddNewPartButtonClick(MouseEvent event) throws IOException{
         addNewPartSceneChange(event);
     }
 
     @FXML
-    public void onAddNewProductButtonClick(MouseEvent event) throws IOException{
-        newProductTextFieldSetup();
+    protected void onAddNewProductButtonClick(MouseEvent event) throws IOException{
         addNewProductSceneChange(event);
-
     }
 
     @FXML
-    public void onModifyPartButtonClick(MouseEvent event) throws IOException{
-        modifiedPartTextFieldSetup();
+    protected void onModifyPartButtonClick(MouseEvent event) throws IOException{
         modifyPartSceneChange(event);
-
     }
 
     @FXML
-    public void onModifyProductButtonClick(MouseEvent event) throws IOException{
-        modifiedProductTextFieldSetup();
+    protected void onModifyProductButtonClick(MouseEvent event) throws IOException{
         modifyProductSceneChange(event);
-
-
-    }
-
-    void mainMenuPartTableViewSetup(){
-        allPartsTable = new TableView<>();
-        allPartsTable.setItems(getAllParts());
-
-        TableColumn<Part, Integer> partIdCol = new TableColumn<>("ID");
-        partIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-        TableColumn<Part, Integer> partNameCol = new TableColumn<>("Name");
-        partNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-        TableColumn<Part, Integer> partStockCol = new TableColumn<>("Stock");
-        partStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        TableColumn<Part, Integer> partPriceCol = new TableColumn<>("Price");
-        partPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
-        TableColumn<Part, Integer> partMinCol = new TableColumn<>("Min");
-        partMinCol.setCellValueFactory(new PropertyValueFactory<>("min"));
-        TableColumn<Part, Integer> partMaxCol = new TableColumn<>("Max");
-        partMaxCol.setCellValueFactory(new PropertyValueFactory<>("max"));
-
-        allPartsTable.getColumns().add(partIdCol);
-        allPartsTable.getColumns().add(partNameCol);
-        allPartsTable.getColumns().add(partStockCol);
-        allPartsTable.getColumns().add(partPriceCol);
-        allPartsTable.getColumns().add(partMinCol);
-        allPartsTable.getColumns().add(partMaxCol);
     }
 
 
+    protected void mainMenuPartTableViewSetup(){
+//        allPartsTable = new TableView<>();
+//        allPartsIdCol = new TableColumn<>();
+        allPartsIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+//        allPartsNameCol = new TableColumn<>();
+        allPartsNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+//        allPartsStockCol = new TableColumn<>();
+        allPartsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+//        allPartsPriceCol = new TableColumn<>();
+        allPartsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
 
+    protected void mainMenuProductTableViewSetup(){
+        allProductsTable = new TableView<>();
+        allProductsIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        allProductsNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        allProductsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        allProductsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
 
-    @FXML //delete button
-    protected static void deleteSelectedPart(){
+    static int selectedPart(){
+        if(allPartsTable != null) {
+            return allPartsTable.getSelectionModel().selectedItemProperty().get().getId();
+        }
+        else{
+            return 0;
+        }
+    }
+    static int selectedProduct(){
+        if(allProductsTable != null) {
+            return allProductsTable.getSelectionModel().selectedItemProperty().get().getId();
+        }
+        else{
+            return 0;
+        }
+    }
+
+    @FXML // when something is deleted lower the ids for all
+    protected void deleteSelectedPart(){
         ObservableList<Part> selectedPart = allPartsTable.getSelectionModel().getSelectedItems();
         if (allPartsTable.getSelectionModel().getSelectedItems() != null) {
             for (Part hotFilter : selectedPart) {
                 deletePart(hotFilter);
                 allPartsTable.setItems(getAllParts());
-//                toastyScene.setRoot(conformationMessage);
             }
         }
     }
 
-    @FXML //delete button
-    protected static void deleteSelectedProduct(){
+    @FXML // when something is deleted lower the ids for all
+    protected void deleteSelectedProduct(){
         ObservableList<Product> selectedPart = allProductsTable.getSelectionModel().getSelectedItems();
         if (allProductsTable.getSelectionModel().getSelectedItems() != null) {
             for (Product hotFilter : selectedPart) {
                 deleteProduct(hotFilter);
                 hotFilter.getAllAssociatedParts().clear();
                 allProductsTable.setItems(getAllProducts());
-//                toastyScene.setRoot(conformationMessage);
             }
         }
     }
 
 
-
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        mainMenuPartTableViewSetup();
+        mainMenuProductTableViewSetup();
+    }
 }

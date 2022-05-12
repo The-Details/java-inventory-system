@@ -196,15 +196,7 @@ public class Inventory extends Application {
     public static ObservableList<Product> getAllProducts(){
         return allProducts;
     }
-
-
-
     public static Scene toastyScene;
-    public static FXMLLoader fxmlLoaderMain = new FXMLLoader(Inventory.class.getResource("MainMenu.fxml"));
-    public static FXMLLoader fxmlLoaderAddPart = new FXMLLoader(Inventory.class.getResource("AddPart.fxml"));
-    public static FXMLLoader fxmlLoaderModifyPart = new FXMLLoader(Inventory.class.getResource("ModifyPart.fxml"));
-    public static FXMLLoader fxmlLoaderAddProduct = new FXMLLoader(Inventory.class.getResource("AddProduct.fxml"));
-    public static FXMLLoader fxmlLoaderModifyProduct = new FXMLLoader(Inventory.class.getResource("ModifyProduct.fxml"));
 
     @Override
     public void start(Stage stage) throws IOException {

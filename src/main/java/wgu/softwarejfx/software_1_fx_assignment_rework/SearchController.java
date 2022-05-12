@@ -6,9 +6,6 @@ import javafx.fxml.FXML;
 
 import java.util.function.Predicate;
 
-import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.getAllParts;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.getAllProducts;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.*;
 
 public class SearchController {
 
@@ -78,19 +75,19 @@ public class SearchController {
 //     * @param partTableView
 //     * This method will display any matching part within a row of the table
 //     */
-    @FXML
-    protected static void searchPart(){
-        try{
-            FilteredList<Part> partsFilteredList = new FilteredList<>(FXCollections.observableList(getAllParts()));
-            allPartsTable.setItems(partsFilteredList);
-
-            partsSearchBar.textProperty().addListener(((observable, oldValue, newValue) ->
-                    partsFilteredList.setPredicate(createPartPredicate(newValue))));
-        }
-        catch (NullPointerException e){
-            allPartsTable.setItems(getAllParts());
-        }
-    }
+//    @FXML
+//    protected static void searchPart(){
+//        try{
+//            FilteredList<Part> partsFilteredList = new FilteredList<>(FXCollections.observableList(getAllParts()));
+//            allPartsTable.setItems(partsFilteredList);
+//
+//            partsSearchBar.textProperty().addListener(((observable, oldValue, newValue) ->
+//                    partsFilteredList.setPredicate(createPartPredicate(newValue))));
+//        }
+//        catch (NullPointerException e){
+//            allPartsTable.setItems(getAllParts());
+//        }
+//    }
 
     //    /**
 //     *
@@ -99,17 +96,17 @@ public class SearchController {
 //     * @param productTableView
 //     * This method will display any matching product within a row of the table
 //     */
-    @FXML
-    protected static void searchProduct(){
-        try{
-            FilteredList<Product> productsFilteredList = new FilteredList<>(FXCollections.observableList(getAllProducts()));
-            allProductsTable.setItems(productsFilteredList);
-
-            productsSearchBar.textProperty().addListener(((observable, oldValue, newValue) ->
-                    productsFilteredList.setPredicate(createProductPredicate(newValue))));
-        }
-        catch (NullPointerException e){
-            allProductsTable.setItems(getAllProducts());
-        }
-    }
+//    @FXML
+//    protected static void searchProduct(){
+//        try{
+//            FilteredList<Product> productsFilteredList = new FilteredList<>(FXCollections.observableList(getAllProducts()));
+//            allProductsTable.setItems(productsFilteredList);
+//
+//            productsSearchBar.textProperty().addListener(((observable, oldValue, newValue) ->
+//                    productsFilteredList.setPredicate(createProductPredicate(newValue))));
+//        }
+//        catch (NullPointerException e){
+//            allProductsTable.setItems(getAllProducts());
+//        }
+//    }
 }

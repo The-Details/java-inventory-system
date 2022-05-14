@@ -27,8 +27,7 @@ import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController.inHouseParts;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController.outsourcedParts;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.allPartsTable;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.selectedPart;
+
 
 public class ModifyPartController implements Initializable {
 
@@ -93,32 +92,41 @@ public class ModifyPartController implements Initializable {
     }
 
     protected void modifiedPartTextFieldSetup(){
-        String selectedPartName = lookupPart(selectedPart()).getName();
-        if (!lookupInHousePart(selectedPartName).isEmpty()){
-            modifiedPartId.setPromptText(String.valueOf(lookupInHousePart(lookupInHousePart(selectedPart()).getId())));
-            modifiedPartId.setDisable(true);
-            modifiedPartId.setEditable(false);
-            modifiedPartName.setText(lookupInHousePart(selectedPart()).getName());
-            modifiedPartPrice.setText(String.valueOf(lookupInHousePart(selectedPart()).getPrice()));
-            modifiedPartStock.setText(String.valueOf(lookupInHousePart(selectedPart()).getStock()));
-            modifiedPartMin.setText(String.valueOf(lookupInHousePart(selectedPart()).getMin()));
-            modifiedPartMax.setText(String.valueOf(lookupInHousePart(selectedPart()).getMax()));
-            modifiedPartMachineInfoTextField.setText(String.valueOf(lookupInHousePart(selectedPart()).getMachineId()));
+        try {
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
+            Parent root = loader.load();
+            MainMenuController test1 = loader.getController();
+            int selectedPart = test1.selectedPart();
+
+            String selectedPartName = lookupPart(selectedPart-1).getName();
+            if (!lookupInHousePart(selectedPartName).isEmpty()) {
+                modifiedPartId.setPromptText(String.valueOf(lookupInHousePart(selectedPart).getId()));
+                modifiedPartId.setDisable(true);
+                modifiedPartId.setEditable(false);
+                modifiedPartName.setText(lookupInHousePart(selectedPart).getName());
+                modifiedPartPrice.setText(String.valueOf(lookupInHousePart(selectedPart).getPrice()));
+                modifiedPartStock.setText(String.valueOf(lookupInHousePart(selectedPart).getStock()));
+                modifiedPartMin.setText(String.valueOf(lookupInHousePart(selectedPart).getMin()));
+                modifiedPartMax.setText(String.valueOf(lookupInHousePart(selectedPart).getMax()));
+                modifiedPartMachineInfoTextField.setText(String.valueOf(lookupInHousePart(selectedPart).getMachineId()));
+            } else if (!lookupOutsourcedPart(selectedPartName).isEmpty()) {
+                modifiedPartId.setPromptText(String.valueOf(lookupOutsourcedPart(selectedPart).getId()));
+                modifiedPartId.setDisable(true);
+                modifiedPartId.setEditable(false);
+                modifiedPartName.setText(lookupOutsourcedPart(selectedPart).getName());
+                modifiedPartPrice.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getPrice()));
+                modifiedPartStock.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getStock()));
+                modifiedPartMin.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getMin()));
+                modifiedPartMax.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getMax()));
+                modifiedPartMachineInfoTextField.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getCompanyName()));
+            } else {
+                //Part not selected, prevent continuation
+                System.out.println("Part not selected");
+            }
         }
-        else if (!lookupOutsourcedPart(selectedPartName).isEmpty()){
-            modifiedPartId.setPromptText(String.valueOf(lookupOutsourcedPart(selectedPart()).getId()));
-            modifiedPartId.setDisable(true);
-            modifiedPartId.setEditable(false);
-            modifiedPartName.setText(lookupOutsourcedPart(selectedPart()).getName());
-            modifiedPartPrice.setText(String.valueOf(lookupOutsourcedPart(selectedPart()).getPrice()));
-            modifiedPartStock.setText(String.valueOf(lookupOutsourcedPart(selectedPart()).getStock()));
-            modifiedPartMin.setText(String.valueOf(lookupOutsourcedPart(selectedPart()).getMin()));
-            modifiedPartMax.setText(String.valueOf(lookupOutsourcedPart(selectedPart()).getMax()));
-            modifiedPartMachineInfoTextField.setText(String.valueOf(lookupOutsourcedPart(selectedPart()).getCompanyName()));
-        }
-        else{
-            //Part not selected, prevent continuation
-            System.out.println("Part not selected");
+        catch (Exception e){
+//            System.out.println("shit");
+        e.printStackTrace();
         }
     }
 
@@ -197,19 +205,32 @@ public class ModifyPartController implements Initializable {
 
 
     protected void saveModifiedInHousePart(){
+        try {
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
+            Parent root = loader.load();
+            MainMenuController test1 = loader.getController();
+            int selectedPart = test1.selectedPart();
 
-        modifiedInHousePart = new InHouse(0,"name",0,0,0,0,0);
-        modifiedInHousePart.setName(modifiedPartName.getText());
-        modifiedInHousePart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
-        modifiedInHousePart.setStock(Integer.parseInt(modifiedPartStock.getText()));
-        modifiedInHousePart.setMax(Integer.parseInt(modifiedPartMax.getText()));
-        modifiedInHousePart.setMin(Integer.parseInt(modifiedPartMin.getText()));
-        modifiedInHousePart.setMachineId(Integer.parseInt(modifiedPartMachineInfoTextField.getText()));
-        updatePart(selectedPart(), modifiedInHousePart);
-        allPartsTable.setItems(getAllParts());
+            modifiedInHousePart = new InHouse(0, "name", 0, 0, 0, 0, 0);
+            modifiedInHousePart.setName(modifiedPartName.getText());
+            modifiedInHousePart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
+            modifiedInHousePart.setStock(Integer.parseInt(modifiedPartStock.getText()));
+            modifiedInHousePart.setMax(Integer.parseInt(modifiedPartMax.getText()));
+            modifiedInHousePart.setMin(Integer.parseInt(modifiedPartMin.getText()));
+            modifiedInHousePart.setMachineId(Integer.parseInt(modifiedPartMachineInfoTextField.getText()));
+        updatePart(selectedPart, modifiedInHousePart);
+        }catch (Exception e){
+            System.out.println("shit ");
+        }
     }
 
     protected void saveModifiedOutsourcedPart(){
+        try {
+            FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
+            Parent root = loader.load();
+            MainMenuController test1 = loader.getController();
+            int selectedPart = test1.allPartsTable.getSelectionModel().selectedItemProperty().get().getId();
+
         modifiedOutsourcedPart = new Outsourced(0,"name",0,0,0,0,"company");
         modifiedOutsourcedPart.setName(modifiedPartName.getText());
         modifiedOutsourcedPart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
@@ -217,8 +238,11 @@ public class ModifyPartController implements Initializable {
         modifiedOutsourcedPart.setMax(Integer.parseInt(modifiedPartMax.getText()));
         modifiedOutsourcedPart.setMin(Integer.parseInt(modifiedPartMin.getText()));
         modifiedOutsourcedPart.setCompanyName(modifiedPartMachineInfoTextField.getText());
-        updatePart(selectedPart(), modifiedOutsourcedPart);
-        allPartsTable.setItems(getAllParts());
+        updatePart(selectedPart, modifiedOutsourcedPart);
+        }catch (Exception e){
+            System.out.println("shit the sequel");
+        }
+
     }
 
     protected void saveModifiedPart(MouseEvent event) throws IOException {

@@ -26,8 +26,6 @@ import java.util.ResourceBundle;
 
 import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.allProductsTable;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.selectedProduct;
 
 public class ModifyProductController implements Initializable {
 
@@ -63,14 +61,14 @@ public class ModifyProductController implements Initializable {
     private Product modifiedProduct;
 
     protected void modifiedProductTextFieldSetup(){
-        modifiedProductId.setPromptText(String.valueOf(lookupProduct(selectedProduct()).getId()));
+//        modifiedProductId.setPromptText(String.valueOf(lookupProduct(selectedProduct()).getId()));
         modifiedProductId.setDisable(true);
         modifiedProductId.setEditable(false);
-        modifiedProductName.setText(lookupProduct(selectedProduct()).getName());
-        modifiedProductPrice.setText(String.valueOf(lookupProduct(selectedProduct()).getPrice()));
-        modifiedProductStock.setText(String.valueOf(lookupProduct(selectedProduct()).getStock()));
-        modifiedProductMin.setText(String.valueOf(lookupProduct(selectedProduct()).getMin()));
-        modifiedProductMax.setText(String.valueOf(lookupProduct(selectedProduct()).getMax()));
+//        modifiedProductName.setText(lookupProduct(selectedProduct()).getName());
+//        modifiedProductPrice.setText(String.valueOf(lookupProduct(selectedProduct()).getPrice()));
+//        modifiedProductStock.setText(String.valueOf(lookupProduct(selectedProduct()).getStock()));
+//        modifiedProductMin.setText(String.valueOf(lookupProduct(selectedProduct()).getMin()));
+//        modifiedProductMax.setText(String.valueOf(lookupProduct(selectedProduct()).getMax()));
     }
 
     @FXML
@@ -140,14 +138,14 @@ public class ModifyProductController implements Initializable {
 
     protected void saveModifiedProductData(){
         modifiedProduct = new Product(0,"name",0.0,0,0,0);
-        modifiedProduct.setId(selectedProduct());
+//        modifiedProduct.setId(selectedProduct());
         modifiedProduct.setName(modifiedProductName.getText());
         modifiedProduct.setPrice(Double.parseDouble(modifiedProductPrice.getText()));
         modifiedProduct.setStock(Integer.parseInt(modifiedProductStock.getText()));
         modifiedProduct.setMin(Integer.parseInt(modifiedProductMin.getText()));
         modifiedProduct.setMax(Integer.parseInt(modifiedProductMax.getText()));
-        updateProduct(selectedProduct(), modifiedProduct);
-        allProductsTable.setItems(getAllProducts());
+//        updateProduct(selectedProduct(), modifiedProduct);
+//        allProductsTable.setItems(getAllProducts());
     }
 
     protected void saveModifiedProduct(MouseEvent event) throws IOException {

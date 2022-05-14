@@ -135,14 +135,14 @@ public class AddProductController implements Initializable {
 
     protected void saveNewProductData(){
         newProduct = new Product(0,"name",0.0,0,0,0);
-        newProduct.setId(selectedProduct());
+//        newProduct.setId(selectedProduct());
         newProduct.setName(newProductName.getText());
         newProduct.setPrice(Double.parseDouble(newProductPrice.getText()));
         newProduct.setStock(Integer.parseInt(newProductStock.getText()));
         newProduct.setMin(Integer.parseInt(newProductMin.getText()));
         newProduct.setMax(Integer.parseInt(newProductMax.getText()));
         addProduct(newProduct);
-        allProductsTable.setItems(getAllProducts());
+//        allProductsTable.setItems(getAllProducts());
     }
 
     protected void saveNewProduct(MouseEvent event) throws IOException {

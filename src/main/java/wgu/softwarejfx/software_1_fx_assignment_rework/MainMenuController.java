@@ -27,9 +27,9 @@ public class MainMenuController implements Initializable {
     @FXML
     public TextField productsSearchBar;
     @FXML
-    public static TableView<Part> allPartsTable = new TableView<>();
+    public TableView<Part> allPartsTable;
     @FXML
-    public static TableView<Product> allProductsTable;
+    public TableView<Product> allProductsTable;
     @FXML
     private Button addPartButton;
     @FXML
@@ -104,6 +104,7 @@ public class MainMenuController implements Initializable {
     @FXML
     protected void onModifyPartButtonClick(MouseEvent event) throws IOException{
         modifyPartSceneChange(event);
+        selectedPart();
     }
 
     @FXML
@@ -113,26 +114,22 @@ public class MainMenuController implements Initializable {
 
 
     protected void mainMenuPartTableViewSetup(){
-//        allPartsTable = new TableView<>();
-//        allPartsIdCol = new TableColumn<>();
+        allPartsTable.setItems(getAllParts());
         allPartsIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
-//        allPartsNameCol = new TableColumn<>();
         allPartsNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-//        allPartsStockCol = new TableColumn<>();
         allPartsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
-//        allPartsPriceCol = new TableColumn<>();
         allPartsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
     protected void mainMenuProductTableViewSetup(){
-        allProductsTable = new TableView<>();
+        allProductsTable.setItems(getAllProducts());
         allProductsIdCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         allProductsNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         allProductsStockCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         allProductsPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
-    static int selectedPart(){
+    int selectedPart(){
         if(allPartsTable != null) {
             return allPartsTable.getSelectionModel().selectedItemProperty().get().getId();
         }
@@ -140,7 +137,7 @@ public class MainMenuController implements Initializable {
             return 0;
         }
     }
-    static int selectedProduct(){
+    int selectedProduct(){
         if(allProductsTable != null) {
             return allProductsTable.getSelectionModel().selectedItemProperty().get().getId();
         }

@@ -25,7 +25,6 @@ import java.util.ResourceBundle;
 
 import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.allPartsTable;
 
 public class AddPartController implements Initializable {
 
@@ -210,21 +209,19 @@ public class AddPartController implements Initializable {
         newInHousePart.setMachineId(Integer.parseInt(newPartMachineInfoTextField.getText()));
         inHouseParts.add(newInHousePart);
         addPart(newInHousePart);
-        allPartsTable.getItems().add(newInHousePart);
     }
 
     protected void saveNewOutsourcedPart(){
-        newOutsourcedPart = new Outsourced(0,"name",0,0,0,0,"company");
-        newOutsourcedPart.setId(getAllParts().size() + 1);
-        newOutsourcedPart.setName(newPartName.getText());
-        newOutsourcedPart.setPrice(Double.parseDouble(newPartPrice.getText()));
-        newOutsourcedPart.setStock(Integer.parseInt(newPartStock.getText()));
-        newOutsourcedPart.setMax(Integer.parseInt(newPartMax.getText()));
-        newOutsourcedPart.setMin(Integer.parseInt(newPartMin.getText()));
-        newOutsourcedPart.setCompanyName(newPartMachineInfoTextField.getText());
-        outsourcedParts.add(newOutsourcedPart);
-        addPart(newOutsourcedPart);
-        allPartsTable.setItems(getAllParts());
+            newOutsourcedPart = new Outsourced(0,"name",0,0,0,0,"company");
+            newOutsourcedPart.setId(getAllParts().size() + 1);
+            newOutsourcedPart.setName(newPartName.getText());
+            newOutsourcedPart.setPrice(Double.parseDouble(newPartPrice.getText()));
+            newOutsourcedPart.setStock(Integer.parseInt(newPartStock.getText()));
+            newOutsourcedPart.setMax(Integer.parseInt(newPartMax.getText()));
+            newOutsourcedPart.setMin(Integer.parseInt(newPartMin.getText()));
+            newOutsourcedPart.setCompanyName(newPartMachineInfoTextField.getText());
+            outsourcedParts.add(newOutsourcedPart);
+            addPart(newOutsourcedPart);
     }
 
     protected void saveNewPart(MouseEvent event) throws IOException {

@@ -58,7 +58,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="addNewAssociatedPart" mnemonicParsing="false" onMouseClicked="#addAssociatedPartForModifiedProduct" text="Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <Button fx:id="addNewAssociatedPart" mnemonicParsing="false" onMouseClicked="#addAssociatedPartForNewProduct" text="Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
                </children>
             </GridPane>
             <GridPane vgap="10.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
@@ -72,7 +72,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="removeNewAssociatedPart" mnemonicParsing="false" onMouseClicked="#removeAssociatedPartForModifiedProduct" prefHeight="25.0" prefWidth="152.0" text="Remove Associated Part" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                  <Button fx:id="removeNewAssociatedPart" mnemonicParsing="false" onMouseClicked="#removeAssociatedPartForNewProduct" prefHeight="25.0" prefWidth="152.0" text="Remove Associated Part" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <GridPane GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.98117913381625" minWidth="10.0" prefWidth="90.07553948537875" />
@@ -195,18 +195,18 @@
             </GridPane>
             <TableView fx:id="allPartsNewProductMenu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
               <columns>
-                <TableColumn minWidth="135.0" prefWidth="135.0" text="ID" />
-                <TableColumn minWidth="135.0" prefWidth="135.0" text="Name" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Stock" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Price" />
+                <TableColumn fx:id="allPartsIdColNewProduct" minWidth="135.0" prefWidth="135.0" text="ID" />
+                <TableColumn fx:id="allPartsNameColNewProduct" minWidth="135.0" prefWidth="135.0" text="Name" />
+                  <TableColumn fx:id="allPartsStockColNewProduct" minWidth="135.0" prefWidth="135.0" text="Stock" />
+                  <TableColumn fx:id="allPartsPriceColNewProduct" minWidth="135.0" prefWidth="135.0" text="Price" />
               </columns>
             </TableView>
             <TableView fx:id="associatedNewProductMenu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.rowSpan="2">
               <columns>
-                <TableColumn minWidth="135.0" prefWidth="135.0" text="ID" />
-                <TableColumn minWidth="135.0" prefWidth="135.0" text="Name" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Stock" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Price" />
+                <TableColumn fx:id="allPartsIdColNewAssociatedPart" minWidth="135.0" prefWidth="135.0" text="ID" />
+                <TableColumn fx:id="allPartsNameColNewAssociatedPart" minWidth="135.0" prefWidth="135.0" text="Name" />
+                  <TableColumn fx:id="allPartsStockColNewAssociatedPart" minWidth="135.0" prefWidth="135.0" text="Stock" />
+                  <TableColumn fx:id="allPartsPriceColNewAssociatedPart" minWidth="135.0" prefWidth="135.0" text="Price" />
               </columns>
             </TableView>
          </children>

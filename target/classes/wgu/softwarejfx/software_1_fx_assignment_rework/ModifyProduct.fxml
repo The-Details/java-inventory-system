@@ -195,18 +195,18 @@
                 </GridPane>
                 <TableView fx:id="allPartsModifiedProductMenu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" GridPane.rowSpan="2">
                     <columns>
-                        <TableColumn minWidth="135.0" prefWidth="135.0" text="ID" />
-                        <TableColumn minWidth="135.0" prefWidth="135.0" text="Name" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Stock" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Price" />
+                        <TableColumn fx:id="allPartsIdColModifiedProduct" minWidth="135.0" prefWidth="135.0" text="ID" />
+                        <TableColumn fx:id="allPartsNameColModifiedProduct" minWidth="135.0" prefWidth="135.0" text="Name" />
+                  <TableColumn fx:id="allPartsStockColModifiedProduct" minWidth="135.0" prefWidth="135.0" text="Stock" />
+                  <TableColumn fx:id="allPartsPriceColModifiedProduct" minWidth="135.0" prefWidth="135.0" text="Price" />
                     </columns>
                 </TableView>
                 <TableView fx:id="associatedModifiedProductMenu" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="4" GridPane.rowSpan="2">
                     <columns>
-                        <TableColumn minWidth="135.0" prefWidth="135.0" text="ID" />
-                        <TableColumn minWidth="135.0" prefWidth="135.0" text="Name" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Stock" />
-                  <TableColumn minWidth="135.0" prefWidth="135.0" text="Price" />
+                        <TableColumn fx:id="allPartsIdColModifiedAssociatedPart" minWidth="135.0" prefWidth="135.0" text="ID" />
+                        <TableColumn fx:id="allPartsNameColModifiedAssociatedPart" minWidth="135.0" prefWidth="135.0" text="Name" />
+                  <TableColumn fx:id="allPartsStockColModifiedAssociatedPart" minWidth="135.0" prefWidth="135.0" text="Stock" />
+                  <TableColumn fx:id="allPartsPriceColModifiedAssociatedPart" minWidth="135.0" prefWidth="135.0" text="Price" />
                     </columns>
                 </TableView>
             </children>

@@ -12,6 +12,11 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class SceneController {
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected static void addNewPartSceneChange(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("AddPart.fxml")));
@@ -21,6 +26,11 @@ public class SceneController {
         stage.show();
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected static void addNewProductSceneChange(MouseEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("AddProduct.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -29,6 +39,11 @@ public class SceneController {
         stage.show();
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected static void modifyPartSceneChange(MouseEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("ModifyPart.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -37,6 +52,11 @@ public class SceneController {
         stage.show();
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected static void modifyProductSceneChange(MouseEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("ModifyProduct.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();

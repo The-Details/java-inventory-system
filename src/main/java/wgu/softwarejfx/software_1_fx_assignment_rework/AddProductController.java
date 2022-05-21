@@ -9,8 +9,10 @@ import javafx.geometry.VPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
@@ -43,10 +45,6 @@ public class AddProductController implements Initializable {
     @FXML
     private TableView<Part> associatedNewProductMenu;
     @FXML
-    private Popup conformationMessage;
-    @FXML
-    private Popup errorMessage;
-    @FXML
     private TextField newProductId;
     @FXML
     private TextField newProductName;
@@ -58,14 +56,62 @@ public class AddProductController implements Initializable {
     private TextField newProductMax;
     @FXML
     private TextField newProductMin;
+    @FXML
+    private TableColumn<Part, Integer> allPartsIdColNewProduct;
+    @FXML
+    private TableColumn<Part, Integer> allPartsNameColNewProduct;
+    @FXML
+    private TableColumn<Part, Integer> allPartsStockColNewProduct;
+    @FXML
+    private TableColumn<Part, Integer> allPartsPriceColNewProduct;
+    @FXML
+    private TableColumn<Part, Integer> allPartsIdColNewAssociatedPart;
+    @FXML
+    private TableColumn<Part, Integer> allPartsNameColNewAssociatedPart;
+    @FXML
+    private TableColumn<Part, Integer> allPartsStockColNewAssociatedPart;
+    @FXML
+    private TableColumn<Part, Integer> allPartsPriceColNewAssociatedPart;
     private Product newProduct;
 
+
+    /**
+     *
+     */
+    protected void allPartsNewProductMenuSetup(){
+        allPartsNewProductMenu.setItems(getAllParts());
+        allPartsIdColNewProduct.setCellValueFactory(new PropertyValueFactory<>("id"));
+        allPartsNameColNewProduct.setCellValueFactory(new PropertyValueFactory<>("name"));
+        allPartsStockColNewProduct.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        allPartsPriceColNewProduct.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+    /**
+     *
+     */
+    protected void associatedNewProductMenuSetup(){
+        allPartsIdColNewAssociatedPart.setCellValueFactory(new PropertyValueFactory<>("id"));
+        allPartsNameColNewAssociatedPart.setCellValueFactory(new PropertyValueFactory<>("name"));
+        allPartsStockColNewAssociatedPart.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        allPartsPriceColNewAssociatedPart.setCellValueFactory(new PropertyValueFactory<>("price"));
+    }
+
+
+    /**
+     *
+     */
     protected void newProductTextFieldSetup(){
         newProductId.setPromptText("Auto Generated");
         newProductId.setDisable(true);
         newProductId.setEditable(false);
+        allPartsNewProductMenu.setItems(getAllParts());
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void onSaveNewProductButtonClick(MouseEvent event) throws IOException {
             if(newProductName.getText().isEmpty() || newProductPrice.getText().isEmpty()
@@ -133,18 +179,26 @@ public class AddProductController implements Initializable {
 
     }
 
+    /**
+     *
+     */
     protected void saveNewProductData(){
         newProduct = new Product(0,"name",0.0,0,0,0);
-//        newProduct.setId(selectedProduct());
+        newProduct.setId(getAllProducts().size() + 1);
         newProduct.setName(newProductName.getText());
         newProduct.setPrice(Double.parseDouble(newProductPrice.getText()));
         newProduct.setStock(Integer.parseInt(newProductStock.getText()));
         newProduct.setMin(Integer.parseInt(newProductMin.getText()));
         newProduct.setMax(Integer.parseInt(newProductMax.getText()));
         addProduct(newProduct);
-//        allProductsTable.setItems(getAllProducts());
+        newProduct.getAllAssociatedParts().addAll(associatedNewProductMenu.getItems());
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected void saveNewProduct(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -153,11 +207,21 @@ public class AddProductController implements Initializable {
         stage.show();
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void onCancelModifiedProductButtonClick(MouseEvent event) throws IOException{
         cancelNewProduct(event);
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected void cancelNewProduct (MouseEvent event) throws IOException{
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -166,26 +230,26 @@ public class AddProductController implements Initializable {
         stage.show();
     }
 
+    /**
+     *
+     */
     @FXML
-    protected void addAssociatedPartForModifiedProduct(){
-        ObservableList<Part> selectedPart = allPartsNewProductMenu.getSelectionModel().getSelectedItems();
-        for(Part hotFilter : selectedPart){
-            newProduct.addAssociatedParts(hotFilter);
-        }
-        associatedNewProductMenu.setItems(newProduct.getAllAssociatedParts());
+    protected void addAssociatedPartForNewProduct(){
+       associatedNewProductMenu.getItems().add(allPartsNewProductMenu.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     *
+     */
     @FXML
-    protected void removeAssociatedPartForModifiedProduct(){
-        ObservableList<Part> selectedPart = associatedNewProductMenu.getSelectionModel().getSelectedItems();
-        for(Part hotFilter : selectedPart){
-            newProduct.deleteAssociatedPart(hotFilter);
-        }
-        associatedNewProductMenu.setItems(newProduct.getAllAssociatedParts());
+    protected void removeAssociatedPartForNewProduct(){
+        associatedNewProductMenu.getItems().remove(allPartsNewProductMenu.getSelectionModel().getSelectedItem());
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         newProductTextFieldSetup();
+        allPartsNewProductMenuSetup();
+        associatedNewProductMenuSetup();
     }
 }

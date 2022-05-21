@@ -61,12 +61,21 @@ public class AddPartController implements Initializable {
     private InHouse newInHousePart;
     private Outsourced newOutsourcedPart;
 
+
+    /**
+     *
+     */
     protected void newPartTextFieldSetup(){
         newPartId.setPromptText("Auto Generated");
         newPartId.setDisable(true);
         newPartId.setEditable(false);
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void onSaveNewPartButtonClick(MouseEvent event) throws IOException {
         if (newInHousePartButton.isSelected()){
@@ -197,8 +206,11 @@ public class AddPartController implements Initializable {
 
     }
 
-    protected void saveNewInHousePart(){
 
+    /**
+     *
+     */
+    protected void saveNewInHousePart(){
         newInHousePart = new InHouse(0,"name",0,0,0,0,0);
         newInHousePart.setId(getAllParts().size() + 1);
         newInHousePart.setName(newPartName.getText());
@@ -211,6 +223,10 @@ public class AddPartController implements Initializable {
         addPart(newInHousePart);
     }
 
+
+    /**
+     *
+     */
     protected void saveNewOutsourcedPart(){
             newOutsourcedPart = new Outsourced(0,"name",0,0,0,0,"company");
             newOutsourcedPart.setId(getAllParts().size() + 1);
@@ -224,6 +240,11 @@ public class AddPartController implements Initializable {
             addPart(newOutsourcedPart);
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected void saveNewPart(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -232,11 +253,22 @@ public class AddPartController implements Initializable {
         stage.show();
     }
 
+
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     protected void onCancelNewPartButtonClick(MouseEvent event) throws IOException {
         cancelNewPart(event);
     }
 
+    /**
+     *
+     * @param event
+     * @throws IOException
+     */
     protected void cancelNewPart(MouseEvent event) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(MainMenuController.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -245,11 +277,18 @@ public class AddPartController implements Initializable {
         stage.show();
     }
 
+    /**
+     *
+     */
     @FXML
     protected void onNewInHouseRadioPart() {
         newPartMachineInfoLabel.setText("Machine ID");
         newOutsourcedPartButton.setSelected(false);
     }
+
+    /**
+     *
+     */
     @FXML
     protected void onNewOutsourcedRadioPart() {
         newPartMachineInfoLabel.setText("Company Name");

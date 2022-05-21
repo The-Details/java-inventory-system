@@ -181,7 +181,7 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <Button fx:id="addProductButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAddNewProductButtonClick" text="Add" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+               <Button fx:id="addProductButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onAddNewProductButtonClick" text="Add" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
             </GridPane>
             <GridPane GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <columnConstraints>
@@ -190,7 +190,7 @@
                <rowConstraints>
                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                </rowConstraints>
-               <Button fx:id="modifyProductButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onModifyProductButtonClick" text="Modify" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+               <Button fx:id="modifyProductButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onMouseClicked="#onModifyProductButtonClick" text="Modify" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             </GridPane>
             <GridPane GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <columnConstraints>

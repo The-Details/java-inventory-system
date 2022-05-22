@@ -1,7 +1,5 @@
 package wgu.softwarejfx.software_1_fx_assignment_rework;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -57,10 +55,21 @@ public class ModifyPartController implements Initializable {
     @FXML
     private TextField modifiedPartMachineInfoTextField;
 
+    private final int partIndex;
+    private final String partName;
+
+    public ModifyPartController(int partIndex, String partName){
+        this.partIndex = partIndex;
+        this.partName = partName;
+    }
+
+
     /**
      *
      * @param partId
+     * This method lookup part by taking a part's ID and returning the part
      * @return
+     * This method will return the requested part
      */
     public InHouse lookupInHousePart(int partId) {
         return inHouseParts.get(partId);
@@ -69,7 +78,9 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param partName
+     * This method lookup part by taking a part's name and returning the part
      * @return
+     * This method will return the requested part
      */
     public ObservableList<InHouse> lookupInHousePart(String partName){
         ObservableList<InHouse> searchablePart = FXCollections.observableArrayList();
@@ -84,7 +95,9 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param partId
+     * This method lookup part by taking a part's ID and returning the part
      * @return
+     * This method will return the requested part
      */
     public Outsourced lookupOutsourcedPart(int partId) {
         return outsourcedParts.get(partId);
@@ -93,7 +106,9 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param partName
+     * This method lookup part by taking a part's name and returning the part
      * @return
+     * This method will return the requested part
      */
     public ObservableList<Outsourced> lookupOutsourcedPart(String partName){
         ObservableList<Outsourced> searchablePart = FXCollections.observableArrayList();
@@ -108,7 +123,9 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param index
+     * This method will take a known part index and use it in-conjunction with the remaining existing part data
      * @param selectedPart
+     * This method will take existing part data and update it based on user input
      */
     public void updateInHousePart(int index, InHouse selectedPart){
         String name = selectedPart.getName();
@@ -131,7 +148,9 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param index
+     * This method will take a known part index and use it in-conjunction with the remaining existing part data
      * @param selectedPart
+     * This method will take existing part data and update it based on user input
      */
     public void updateOutsourcedPart(int index, Outsourced selectedPart){
         String name = selectedPart.getName();
@@ -152,7 +171,7 @@ public class ModifyPartController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for the setting up of Modify Part Menu in the event a part is NOT selected for modification.
      */
     public void partFieldPrep(){
         modifiedInHousePartButton.setSelected(false);
@@ -170,44 +189,48 @@ public class ModifyPartController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for the setting up of Modify Part Menu in the event the all parts collections is not null and a part is selected for modification.
      */
-
-    protected void modifiedPartTextFieldSetup(Part selected){
-        MainMenuController x = new MainMenuController();
-            int selectedPart = getAllParts().indexOf(selected);
-            System.out.println(selectedPart + " " + "TESTy");
-        if (getAllParts() != null ) {
-                String selectedPartName = lookupPart(selectedPart).getName();
-                if (!lookupInHousePart(selectedPartName).isEmpty()) {
+    protected void modifiedPartTextFieldSetup(){
+        if (!getAllParts().isEmpty()) {
+            int selectedPart = partIndex;
+                if (!lookupInHousePart(partName).isEmpty()) {
                     modifiedInHousePartButton.setSelected(true);
                     modifiedOutsourcedPartButton.setSelected(false);
-                    modifiedPartId.setPromptText(String.valueOf(lookupInHousePart(selectedPart).getId()));
+                    modifiedPartId.setPromptText(String.valueOf(lookupInHousePart(partName).get(0).getId()));
                     modifiedPartId.setDisable(true);
                     modifiedPartId.setEditable(false);
-                    modifiedPartName.setText(lookupInHousePart(selectedPart).getName());
-                    modifiedPartPrice.setText(String.valueOf(lookupInHousePart(selectedPart).getPrice()));
-                    modifiedPartStock.setText(String.valueOf(lookupInHousePart(selectedPart).getStock()));
-                    modifiedPartMin.setText(String.valueOf(lookupInHousePart(selectedPart).getMin()));
-                    modifiedPartMax.setText(String.valueOf(lookupInHousePart(selectedPart).getMax()));
-                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupInHousePart(selectedPart).getMachineId()));
-                    System.out.println(inHouseParts.indexOf(lookupInHousePart(selectedPart)) + " " + lookupInHousePart(selectedPart).getId() + " " + lookupInHousePart(selectedPart).getName());
-                } else if (!lookupOutsourcedPart(selectedPartName).isEmpty()) {
+                    modifiedPartName.setText(lookupInHousePart(partName).get(0).getName());
+                    modifiedPartPrice.setText(String.valueOf(lookupInHousePart(partName).get(0).getPrice()));
+                    modifiedPartStock.setText(String.valueOf(lookupInHousePart(partName).get(0).getStock()));
+                    modifiedPartMin.setText(String.valueOf(lookupInHousePart(partName).get(0).getMin()));
+                    modifiedPartMax.setText(String.valueOf(lookupInHousePart(partName).get(0).getMax()));
+                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupInHousePart(partName).get(0).getMachineId()));
+                } else if (!lookupOutsourcedPart(partName).isEmpty()) {
                     modifiedPartMachineInfoLabel.setText("Company Name");
                     modifiedInHousePartButton.setSelected(false);
                     modifiedOutsourcedPartButton.setSelected(true);
-                    modifiedPartId.setPromptText(String.valueOf(lookupOutsourcedPart(selectedPart).getId()));
+                    modifiedPartId.setPromptText(String.valueOf(lookupOutsourcedPart(partName).get(0).getId()));
                     modifiedPartId.setDisable(true);
                     modifiedPartId.setEditable(false);
-                    modifiedPartName.setText(lookupOutsourcedPart(selectedPart).getName());
-                    modifiedPartPrice.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getPrice()));
-                    modifiedPartStock.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getStock()));
-                    modifiedPartMin.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getMin()));
-                    modifiedPartMax.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getMax()));
-                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupOutsourcedPart(selectedPart).getCompanyName()));
+                    modifiedPartName.setText(lookupOutsourcedPart(partName).get(0).getName());
+                    modifiedPartPrice.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getPrice()));
+                    modifiedPartStock.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getStock()));
+                    modifiedPartMin.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getMin()));
+                    modifiedPartMax.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getMax()));
+                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getCompanyName()));
                 } else {
-                    //Part not selected, prevent continuation
-                    System.out.println("Part not selected");
+                    GridPane conformation = new GridPane();
+                    Text conformationInfo = new Text("Part not selected");
+                    conformationInfo.setFont(new Font(20));
+                    conformation.getChildren().add(conformationInfo);
+                    GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                    Stage popUp = new Stage();
+                    Scene conformationScene = new Scene(conformation);
+                    popUp.setTitle("Error");
+                    popUp.setScene(conformationScene);
+                    popUp.sizeToScene();
+                    popUp.show();
                 }
         }
         else {
@@ -219,6 +242,7 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param event
+     * This method is repsonsible for saving the modified part after the fields and the data within the fields have been checked for invalidation.
      * @throws IOException
      */
     @FXML
@@ -229,13 +253,13 @@ public class ModifyPartController implements Initializable {
                     || modifiedPartMin.getText().isEmpty() || modifiedPartMachineInfoTextField.getText().isEmpty()){
 
                 GridPane conformation = new GridPane();
-                Text conformationInfo = new Text("Part Successfully Removed");
+                Text conformationInfo = new Text("One or More Part Field(s) left Empty");
                 conformationInfo.setFont(new Font(20));
                 conformation.getChildren().add(conformationInfo);
                 GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
                 Scene conformationScene = new Scene(conformation);
-                popUp.setTitle("Conformation");
+                popUp.setTitle("Error");
                 popUp.setScene(conformationScene);
                 popUp.sizeToScene();
                 popUp.show();
@@ -272,21 +296,44 @@ public class ModifyPartController implements Initializable {
             else if(!modifiedPartName.getText().isEmpty() && Double.parseDouble(modifiedPartPrice.getText()) != 0 && Integer.parseInt(modifiedPartMax.getText()) != 0) {
                 saveModifiedInHousePart();
                 saveModifiedPart(event);
+
+                GridPane conformation = new GridPane();
+                Text conformationInfo = new Text("Part Successfully Modified");
+                conformationInfo.setFont(new Font(20));
+                conformation.getChildren().add(conformationInfo);
+                GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                Stage popUp = new Stage();
+                Scene conformationScene = new Scene(conformation);
+                popUp.setTitle("Conformation");
+                popUp.setScene(conformationScene);
+                popUp.sizeToScene();
+                popUp.show();
             }
         }
         else if (modifiedOutsourcedPartButton.isSelected()){
             saveModifiedOutsourcedPart();
             saveModifiedPart(event);
+
+            GridPane conformation = new GridPane();
+            Text conformationInfo = new Text("Part Successfully Modified");
+            conformationInfo.setFont(new Font(20));
+            conformation.getChildren().add(conformationInfo);
+            GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+            Stage popUp = new Stage();
+            Scene conformationScene = new Scene(conformation);
+            popUp.setTitle("Conformation");
+            popUp.setScene(conformationScene);
+            popUp.sizeToScene();
+            popUp.show();
+
         }
 
     }
 
     /**
-     *
+     * This method is responsible for taking the data from the textfields and updating the outsourced part.
      */
     protected void saveModifiedInHousePart(){
-        MainMenuController x = new MainMenuController();
-        int selectedPart = getAllParts().indexOf(x.allPartsTable.getSelectionModel().getSelectedItem());
         try {
             InHouse modifiedInHousePart = new InHouse(0, "name", 0, 0, 0, 0, 0);
             modifiedInHousePart.setName(modifiedPartName.getText());
@@ -295,18 +342,36 @@ public class ModifyPartController implements Initializable {
             modifiedInHousePart.setMax(Integer.parseInt(modifiedPartMax.getText()));
             modifiedInHousePart.setMin(Integer.parseInt(modifiedPartMin.getText()));
             modifiedInHousePart.setMachineId(Integer.parseInt(modifiedPartMachineInfoTextField.getText()));
-        updatePart(selectedPart, modifiedInHousePart);
+
+            updateInHousePart(inHouseTest(lookupInHousePart(partName)),modifiedInHousePart);
+
+            updatePart(partIndex, modifiedInHousePart);
         }catch (Exception e){
-            System.out.println("shit ");
+            System.out.println("shit prequel");
         }
     }
 
+    int inHouseTest(ObservableList<InHouse> observableList){
+        int inHoT = 0;
+        for (InHouse theTaeto : observableList){
+            inHoT = inHouseParts.indexOf(theTaeto);
+        }
+        return inHoT;
+    }
+
+    int outsourcedTest(ObservableList<Outsourced> observableList){
+        int outS = 0;
+        for (Outsourced theTahto : observableList){
+            outS = outsourcedParts.indexOf(theTahto);
+        }
+        return outS;
+    }
+
+
     /**
-     *
+     * This method is responsible for taking the data from the textfields and updating the outsourced part.
      */
     protected void saveModifiedOutsourcedPart(){
-        MainMenuController x = new MainMenuController();
-        int selectedPart = getAllParts().indexOf(x.allPartsTable.getSelectionModel().getSelectedItem());
         try {
             Outsourced modifiedOutsourcedPart = new Outsourced(0, "name", 0, 0, 0, 0, "company");
             modifiedOutsourcedPart.setName(modifiedPartName.getText());
@@ -315,8 +380,12 @@ public class ModifyPartController implements Initializable {
             modifiedOutsourcedPart.setMax(Integer.parseInt(modifiedPartMax.getText()));
             modifiedOutsourcedPart.setMin(Integer.parseInt(modifiedPartMin.getText()));
             modifiedOutsourcedPart.setCompanyName(modifiedPartMachineInfoTextField.getText());
-        updatePart(selectedPart, modifiedOutsourcedPart);
+
+            updateOutsourcedPart(outsourcedTest(lookupOutsourcedPart(partName)),modifiedOutsourcedPart);
+
+            updatePart(partIndex, modifiedOutsourcedPart);
         }catch (Exception e){
+            e.printStackTrace();
             System.out.println("shit the sequel");
         }
 
@@ -325,6 +394,7 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for the changing the scene from the Modify Part Menu back to the Main Menu after adding a modified part.
      * @throws IOException
      */
     protected void saveModifiedPart(MouseEvent event) throws IOException {
@@ -338,6 +408,7 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param event
+     * This redundant method is responsible for the changing the scene from the Modify Part Menu back to the Main Menu after canceling a modified part.
      * @throws IOException
      */
     @FXML
@@ -348,6 +419,7 @@ public class ModifyPartController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for the changing the scene from the Modify Part Menu back to the Main Menu after canceling a modified part.
      * @throws IOException
      */
     protected void cancelModifiedPart(MouseEvent event) throws IOException {
@@ -359,7 +431,7 @@ public class ModifyPartController implements Initializable {
     }
 
     /**
-     *
+     *This method is responsible for setting up the Radio Button and Part Origin Label on the Modify Part Menu for an inHouse Part.
      */
     @FXML
     protected void onModifiedInHouseRadioPart() {
@@ -368,7 +440,7 @@ public class ModifyPartController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for setting up the Radio Button and Part Origin Label on the Modify Part Menu for an outsourced Part.
      */
     @FXML
     protected void onModifiedOutsourcedRadioPart() {
@@ -378,14 +450,6 @@ public class ModifyPartController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        MainMenuController xx = new MainMenuController();
-        xx.allPartsTable.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Part>() {
-            @Override
-            public void changed(ObservableValue<? extends Part> observableValue, Part part, Part t1) {
-                modifiedPartTextFieldSetup(t1);
-            }
-        });
-
+        modifiedPartTextFieldSetup();
     }
 }

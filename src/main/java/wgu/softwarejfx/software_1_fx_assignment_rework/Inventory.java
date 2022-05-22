@@ -5,16 +5,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 
 /**
- * The java doc folder can be found at this path:  'src/main/resources/org/openjfx/software_1_fx_assignment'.
+ * The java doc folder can be found at this path:  'src/main/resources.
  *
  *
  * A future enhancement that will be made to improve the functionality of the code will be separating the UI elements from the functional elements of the code as well as adding security by implementing a simple login form that will be displayed on runtime
@@ -48,7 +45,7 @@ public class Inventory extends Application {
     /**
      *
      * @param partName
-     *This method lookup part by taking a part's name and returning the part
+     * This method lookup part by taking a part's name and returning the part
      *
      * @return
      * This method will return the requested part
@@ -196,6 +193,7 @@ public class Inventory extends Application {
     public static ObservableList<Product> getAllProducts(){
         return allProducts;
     }
+
     public static Scene toastyScene;
 
     @Override
@@ -207,6 +205,17 @@ public class Inventory extends Application {
         stage.show();
     }
 
+
+
+    /**
+     *
+     * @param args
+     * This method runs the program
+     *
+     *
+     * A future enhancement that will be made to improve the functionality of the code will be separating the UI elements
+     * from the functional elements of the code as well as adding security by implementing a simple login form that will be displayed on runtime
+     */
     public static void main(String[] args) {
         launch();
     }

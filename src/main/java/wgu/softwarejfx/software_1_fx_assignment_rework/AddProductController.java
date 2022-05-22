@@ -1,6 +1,7 @@
 package wgu.softwarejfx.software_1_fx_assignment_rework;
 
-import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,20 +19,21 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
-import static wgu.softwarejfx.software_1_fx_assignment_rework.MainMenuController.*;
 
 public class AddProductController implements Initializable {
 
+    @FXML
+    public TextField partsSearchBarNewProductMenu;
     @FXML
     private Button saveNewProductButton;
     @FXML
@@ -76,7 +78,7 @@ public class AddProductController implements Initializable {
 
 
     /**
-     *
+     * This method sets up the all parts tableview located on the new product menu.
      */
     protected void allPartsNewProductMenuSetup(){
         allPartsNewProductMenu.setItems(getAllParts());
@@ -87,7 +89,7 @@ public class AddProductController implements Initializable {
     }
 
     /**
-     *
+     * This method sets up the associated parts tableview located on the new product menu.
      */
     protected void associatedNewProductMenuSetup(){
         allPartsIdColNewAssociatedPart.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -98,7 +100,8 @@ public class AddProductController implements Initializable {
 
 
     /**
-     *
+     * This method is responsible for preemptively setting up the new product id field as well as the all parts table view
+     * in the new product menu.
      */
     protected void newProductTextFieldSetup(){
         newProductId.setPromptText("Auto Generated");
@@ -110,6 +113,7 @@ public class AddProductController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for saving new products to the all products collection.
      * @throws IOException
      */
     @FXML
@@ -180,7 +184,7 @@ public class AddProductController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for taking the data from the textfields and inserting it into an instance of a product Object
      */
     protected void saveNewProductData(){
         newProduct = new Product(0,"name",0.0,0,0,0);
@@ -197,6 +201,7 @@ public class AddProductController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for the changing the scene from the Add Product Menu back to the Main Menu after adding a new product.
      * @throws IOException
      */
     protected void saveNewProduct(MouseEvent event) throws IOException {
@@ -210,6 +215,7 @@ public class AddProductController implements Initializable {
     /**
      *
      * @param event
+     * This redundant method is responsible for changing the scene from the Add Product Menu back to the Main Menu after canceling a new product.
      * @throws IOException
      */
     @FXML
@@ -220,6 +226,7 @@ public class AddProductController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for changing the scene from the Add Product Menu back to the Main Menu after canceling a new product.
      * @throws IOException
      */
     protected void cancelNewProduct (MouseEvent event) throws IOException{
@@ -231,7 +238,7 @@ public class AddProductController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for adding parts to be associated with the current product.
      */
     @FXML
     protected void addAssociatedPartForNewProduct(){
@@ -239,17 +246,65 @@ public class AddProductController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for removing parts to from associated with the current product.
      */
     @FXML
     protected void removeAssociatedPartForNewProduct(){
         associatedNewProductMenu.getItems().remove(allPartsNewProductMenu.getSelectionModel().getSelectedItem());
     }
 
+
+    /**
+     *
+     * @param searchText
+     * This method accepts a string that will be used to find a desired product
+     * @return
+     * This method will return that string in real time to a different method
+     *
+     */
+    protected Predicate<Part> createPartPredicateNewProductMenu(String searchText){
+        return part -> {
+            if (searchText == null || searchText.isEmpty()) return true;
+            return searchFindsProductNewPartMenu(part, searchText);
+        };
+    }
+
+    /**
+     *
+     * @param part
+     * This method uses this parameter to access the product class' methods
+     * @param searchText
+     * This method uses the provided string to find a product that matches the string
+     * @return
+     * This method returns the matching product, if any
+     */
+    protected boolean searchFindsProductNewPartMenu(Part part, String searchText){
+        return (part.getName().toLowerCase().contains(searchText)) ||
+                (Integer.valueOf(part.getId()).toString().equals(searchText));
+    }
+
+    /**
+     * This method accepts a text-field that will be used to search for a particular product. This method will display any matching product within a row of the table.
+     */
+    protected void searchPartNewProductMenu(){
+        try{
+            FilteredList<Part> partsFilteredList = new FilteredList<>(FXCollections.observableList(getAllParts()));
+            allPartsNewProductMenu.setItems(partsFilteredList);
+
+            partsSearchBarNewProductMenu.textProperty().addListener(((observable, oldValue, newValue) ->
+                    partsFilteredList.setPredicate(createPartPredicateNewProductMenu(newValue))));
+        }
+        catch (NullPointerException e){
+            allPartsNewProductMenu.setItems(getAllParts());
+        }
+    }
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         newProductTextFieldSetup();
         allPartsNewProductMenuSetup();
         associatedNewProductMenuSetup();
+        searchPartNewProductMenu();
     }
 }

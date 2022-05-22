@@ -1,6 +1,8 @@
 package wgu.softwarejfx.software_1_fx_assignment_rework;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,12 +26,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
 
 public class ModifyProductController implements Initializable {
 
+    @FXML
+    private TextField partsSearchBarModifiedProductMenu;
     @FXML
     private Button saveModifiedProductButton;
     @FXML
@@ -73,8 +78,14 @@ public class ModifyProductController implements Initializable {
     private Product modifiedProduct;
 
 
+    private final int productIndex;
+
+    public ModifyProductController(int productIndex){
+        this.productIndex = productIndex;
+    }
+
     /**
-     *
+     * This method is responsible for the setting up of Modify Product Menu in the event a product is NOT selected for modification.
      */
     public void productFieldPrep(){
 
@@ -90,11 +101,10 @@ public class ModifyProductController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for preemptively setting up the modified product fields in the modified product menu.
      */
     protected void modifiedProductTextFieldSetup(){
-        MainMenuController y = new MainMenuController();
-        int selectedProduct = y.selectedProduct();
+        int selectedProduct = productIndex;
         if(getAllProducts() != null){
             modifiedProductId.setPromptText(String.valueOf(lookupProduct(selectedProduct).getId()));
             modifiedProductId.setDisable(true);
@@ -112,7 +122,7 @@ public class ModifyProductController implements Initializable {
     }
 
     /**
-     *
+     * This method sets up the all parts tableview located on the modified product menu.
      */
     protected void allPartsModifiedProductMenuSetup(){
         allPartsModifiedProductMenu.setItems(getAllParts());
@@ -123,12 +133,10 @@ public class ModifyProductController implements Initializable {
     }
 
     /**
-     *
+     * This method sets up the associated parts tableview located on the modified product menu.
      */
     protected void associatedModifiedProductMenuSetup() {
-        MainMenuController x = new MainMenuController();
-        int selectedProductForModification = x.selectedProduct();
-        modifiedProduct = lookupProduct(selectedProductForModification);
+        modifiedProduct = lookupProduct(productIndex);
 
         if(modifiedProduct != null){
             associatedModifiedProductMenu.setItems(modifiedProduct.getAllAssociatedParts());
@@ -143,6 +151,7 @@ public class ModifyProductController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for saving modified products to the all products collection.
      * @throws IOException
      */
     @FXML
@@ -211,25 +220,24 @@ public class ModifyProductController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for taking the data from the textfields and updating the product.
      */
     protected void saveModifiedProductData(){
-        MainMenuController y = new MainMenuController();
-        int selectedProduct = y.selectedProduct();
         modifiedProduct = new Product(0,"name",0.0,0,0,0);
-        modifiedProduct.setId(selectedProduct);
+        modifiedProduct.setId(productIndex);
         modifiedProduct.setName(modifiedProductName.getText());
         modifiedProduct.setPrice(Double.parseDouble(modifiedProductPrice.getText()));
         modifiedProduct.setStock(Integer.parseInt(modifiedProductStock.getText()));
         modifiedProduct.setMin(Integer.parseInt(modifiedProductMin.getText()));
         modifiedProduct.setMax(Integer.parseInt(modifiedProductMax.getText()));
-        updateProduct(selectedProduct, modifiedProduct);
+        updateProduct(productIndex, modifiedProduct);
         modifiedProduct.getAllAssociatedParts().setAll(associatedModifiedProductMenu.getItems());
     }
 
     /**
      *
      * @param event
+     * This method is responsible for changing the scene from the Modify Product Menu back to the Main Menu after adding a modified product.
      * @throws IOException
      */
     protected void saveModifiedProduct(MouseEvent event) throws IOException {
@@ -243,6 +251,7 @@ public class ModifyProductController implements Initializable {
     /**
      *
      * @param event
+     * This redundant method is responsible for changing the scene from the Modify Product Menu back to the Main Menu after canceling a modified part.
      * @throws IOException
      */
     @FXML
@@ -253,6 +262,7 @@ public class ModifyProductController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for changing the scene from the Modify Product Menu back to the Main Menu after canceling a modified part.
      * @throws IOException
      */
     protected void cancelModifiedProduct (MouseEvent event) throws IOException{
@@ -264,13 +274,11 @@ public class ModifyProductController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for adding parts to be associated with the current product.
      */
     @FXML
     protected void addAssociatedPartForModifiedProduct(){
-        MainMenuController x = new MainMenuController();
-        int selectedProductForModification = x.selectedProduct();
-        modifiedProduct = lookupProduct(selectedProductForModification);
+        modifiedProduct = lookupProduct(productIndex);
         ObservableList<Part> selectedPart = allPartsModifiedProductMenu.getSelectionModel().getSelectedItems();
         for(Part hotFilter : selectedPart){
             modifiedProduct.addAssociatedParts(hotFilter);
@@ -280,13 +288,11 @@ public class ModifyProductController implements Initializable {
 
 
     /**
-     *
+     * This method is responsible for removing parts to from associated with the current product.
      */
     @FXML
     protected void removeAssociatedPartForModifiedProduct(){
-        MainMenuController x = new MainMenuController();
-        int selectedProductForModification = x.selectedProduct();
-        modifiedProduct = lookupProduct(selectedProductForModification);
+        modifiedProduct = lookupProduct(productIndex);
         ObservableList<Part> selectedPart = associatedModifiedProductMenu.getSelectionModel().getSelectedItems();
         for(Part hotFilter : selectedPart){
             modifiedProduct.deleteAssociatedPart(hotFilter);
@@ -294,10 +300,60 @@ public class ModifyProductController implements Initializable {
         associatedModifiedProductMenu.setItems(modifiedProduct.getAllAssociatedParts());
     }
 
+
+    /**
+     *
+     * @param searchText
+     * This method accepts a string that will be used to find a desired product
+     * @return
+     * This method will return that string in real time to a different method
+     *
+     */
+    protected Predicate<Part> createPartPredicateModifiedProductMenu(String searchText){
+        return part -> {
+            if (searchText == null || searchText.isEmpty()) return true;
+            return searchFindsProductModifiedPartMenu(part, searchText);
+        };
+    }
+
+    /**
+     *
+     * @param part
+     * This method uses this parameter to access the product class' methods
+     * @param searchText
+     * This method uses the provided string to find a product that matches the string
+     * @return
+     * This method returns the matching product, if any
+     */
+    protected boolean searchFindsProductModifiedPartMenu(Part part, String searchText){
+        return (part.getName().toLowerCase().contains(searchText)) ||
+                (Integer.valueOf(part.getId()).toString().equals(searchText));
+    }
+
+    /**
+     * This method accepts a text-field that will be used to search for a particular product. This method will display any matching product within a row of the table.
+     */
+    protected void searchPartModifiedProductMenu(){
+        try{
+            FilteredList<Part> partsFilteredList = new FilteredList<>(FXCollections.observableList(getAllParts()));
+            allPartsModifiedProductMenu.setItems(partsFilteredList);
+
+            partsSearchBarModifiedProductMenu.textProperty().addListener(((observable, oldValue, newValue) ->
+                    partsFilteredList.setPredicate(createPartPredicateModifiedProductMenu(newValue))));
+        }
+        catch (NullPointerException e){
+            allPartsModifiedProductMenu.setItems(getAllParts());
+        }
+    }
+
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         modifiedProductTextFieldSetup();
         allPartsModifiedProductMenuSetup();
         associatedModifiedProductMenuSetup();
+        searchPartModifiedProductMenu();
     }
 }

@@ -63,7 +63,7 @@ public class AddPartController implements Initializable {
 
 
     /**
-     *
+     * This method is responsible for preemptively setting up the new part id field.
      */
     protected void newPartTextFieldSetup(){
         newPartId.setPromptText("Auto Generated");
@@ -74,6 +74,7 @@ public class AddPartController implements Initializable {
     /**
      *
      * @param event
+     *  This method is responsible for saving new parts to the all parts collection.
      * @throws IOException
      */
     @FXML
@@ -84,17 +85,14 @@ public class AddPartController implements Initializable {
                     || newPartMin.getText().isEmpty() || newPartMachineInfoTextField.getText().isEmpty()){
 
                 GridPane conformation = new GridPane();
-                Text conformationInfo = new Text("Part Successfully Removed");
+                Text conformationInfo = new Text("One or More Part Field(s) left Empty");
                 conformationInfo.setFont(new Font(20));
-                Button errorInfoCloseButton = new Button("Close");
                 conformation.getChildren().add(conformationInfo);
-                conformation.getChildren().add(errorInfoCloseButton);
-                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
                 Stage popUp = new Stage();
                 Scene conformationScene = new Scene(conformation);
-                popUp.setTitle("Conformation");
+                popUp.setTitle("Error");
                 popUp.setScene(conformationScene);
                 popUp.sizeToScene();
                 popUp.show();
@@ -103,10 +101,7 @@ public class AddPartController implements Initializable {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
                 errorInfo.setFont(new Font(20));
-                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
-                error.getChildren().add(errorInfoCloseButton);
-                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
                 Stage popUp = new Stage();
@@ -166,10 +161,7 @@ public class AddPartController implements Initializable {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
                 errorInfo.setFont(new Font(20));
-                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
-                error.getChildren().add(errorInfoCloseButton);
-                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
                 Stage popUp = new Stage();
@@ -184,10 +176,7 @@ public class AddPartController implements Initializable {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
                 errorInfo.setFont(new Font(20));
-                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
-                error.getChildren().add(errorInfoCloseButton);
-                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
                 Stage popUp = new Stage();
@@ -208,7 +197,7 @@ public class AddPartController implements Initializable {
 
 
     /**
-     *
+     * This method is responsible for taking the data from the textfields and inserting it into an instance of an inHouse Object
      */
     protected void saveNewInHousePart(){
         newInHousePart = new InHouse(0,"name",0,0,0,0,0);
@@ -225,7 +214,7 @@ public class AddPartController implements Initializable {
 
 
     /**
-     *
+     * This method is responsible for taking the data from the textfields and inserting it into an instance of an outsourced Object
      */
     protected void saveNewOutsourcedPart(){
             newOutsourcedPart = new Outsourced(0,"name",0,0,0,0,"company");
@@ -243,6 +232,7 @@ public class AddPartController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for changing the scene from the Add Part Menu back to the Main Menu after adding a new part.
      * @throws IOException
      */
     protected void saveNewPart(MouseEvent event) throws IOException {
@@ -257,6 +247,7 @@ public class AddPartController implements Initializable {
     /**
      *
      * @param event
+     * This redundant method is responsible for changing the scene from the Add Part Menu back to the Main Menu after canceling a new part.
      * @throws IOException
      */
     @FXML
@@ -267,6 +258,7 @@ public class AddPartController implements Initializable {
     /**
      *
      * @param event
+     * This method is responsible for changing the scene from the Add Part Menu back to the Main Menu after canceling a new part.
      * @throws IOException
      */
     protected void cancelNewPart(MouseEvent event) throws IOException {
@@ -278,7 +270,7 @@ public class AddPartController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for setting up the Radio Button and Part Origin Label on the Add Part Menu for an inHouse Part.
      */
     @FXML
     protected void onNewInHouseRadioPart() {
@@ -287,7 +279,7 @@ public class AddPartController implements Initializable {
     }
 
     /**
-     *
+     * This method is responsible for setting up the Radio Button and Part Origin Label on the Add Part Menu for an outsourced Part.
      */
     @FXML
     protected void onNewOutsourcedRadioPart() {

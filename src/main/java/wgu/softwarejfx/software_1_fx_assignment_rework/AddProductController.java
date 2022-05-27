@@ -30,6 +30,11 @@ import java.util.function.Predicate;
 import static javafx.geometry.HPos.CENTER;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
 
+
+/**
+ * RUNTIME ERROR: When an inappropriate value was inserted into the add product form a Number Format Exception was thrown
+ * FIX: Catch the exception and display an error message
+ */
 public class AddProductController implements Initializable {
 
     @FXML
@@ -111,7 +116,8 @@ public class AddProductController implements Initializable {
     }
 
     /**
-     *
+     * RUNTIME ERROR: When an inappropriate value (such a letter in the max or inv field) was inserted into the add product form a Number Format Exception was thrown
+     * FIX: Catch the exception and display an error message
      * @param event
      * This method is responsible for saving new products to the all products collection.
      * @throws IOException

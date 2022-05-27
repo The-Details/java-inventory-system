@@ -33,6 +33,11 @@ import static wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController.
 import static wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController.outsourcedParts;
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
 
+
+/**
+ * RUNTIME ERROR: When the user tried to modify or delete a product or part without selecting the product or part to manipulate a IOException was thrown
+ * FIX: Catch the exceptions and display error messages
+ */
 public class MainMenuController implements Initializable {
 
     @FXML
@@ -187,7 +192,8 @@ public class MainMenuController implements Initializable {
     }
 
     /**
-     *
+     * RUNTIME ERROR: When the user tried to modify a part without selecting the part to manipulate a IOException was thrown
+     * FIX: Catch the exception and display an error message
      * @param event
      * This method changes the scene from the Main Menu scene to the Modify Part scene.
      */
@@ -219,13 +225,13 @@ public class MainMenuController implements Initializable {
     }
 
     /**
-     *
+     * RUNTIME ERROR: When the user tried to modify a product without selecting the product to manipulate a IOException was thrown
+     * FIX: Catch the exception and display an error message
      * @param event
      * This method changes the scene from the Main Menu scene to the Modify Product scene.
-     * @throws IOException
      */
     @FXML
-    protected void onModifyProductButtonClick(MouseEvent event) throws IOException{
+    protected void onModifyProductButtonClick(MouseEvent event){
         try {
             mProductLoader.setController(null);
             mProductLoader.setRoot(null);
@@ -273,6 +279,8 @@ public class MainMenuController implements Initializable {
     }
 
     /**
+     * RUNTIME ERROR: When the user tried to delete a part without selecting the part to manipulate an Exception was thrown
+     * FIX: Catch the exception and display an error message
      * This method is responsible for the deletion of parts from the all parts tableview located on the main menu.
      */
     @FXML
@@ -367,6 +375,8 @@ public class MainMenuController implements Initializable {
     }
 
     /**
+     * RUNTIME ERROR: When the user tried to delete a product without selecting the product to manipulate an Exception was thrown
+     * FIX: Catch the exception and display an error message
      * This method is responsible for the deletion of products from the all products tableview located on the main menu.
      */
     @FXML

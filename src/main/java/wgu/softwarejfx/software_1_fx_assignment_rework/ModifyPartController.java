@@ -28,6 +28,10 @@ import static wgu.softwarejfx.software_1_fx_assignment_rework.AddPartController.
 import static wgu.softwarejfx.software_1_fx_assignment_rework.Inventory.*;
 
 
+/**
+ * RUNTIME ERROR: When an inappropriate value was inserted into the modify part form a Number Format Exception was thrown
+ * FIX: Catch the exception and display an error message
+ */
 public class ModifyPartController implements Initializable {
 
     @FXML
@@ -240,7 +244,8 @@ public class ModifyPartController implements Initializable {
 
 
     /**
-     *
+     * RUNTIME ERROR: When an inappropriate value (such a letter in the max or inv field) was inserted into the modify part form a Number Format Exception was thrown
+     * FIX: Catch the exception and display an error message
      * @param event
      * This method is repsonsible for saving the modified part after the fields and the data within the fields have been checked for invalidation.
      * @throws IOException

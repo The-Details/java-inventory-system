@@ -190,17 +190,32 @@ public class MainMenuController implements Initializable {
      *
      * @param event
      * This method changes the scene from the Main Menu scene to the Modify Part scene.
-     * @throws IOException
      */
     @FXML
-    protected void onModifyPartButtonClick(MouseEvent event) throws IOException{
-        mPartLoader.setController(null);
-        mPartLoader.setRoot(null);
-        Parent root = mPartLoader.load();
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    protected void onModifyPartButtonClick(MouseEvent event){
+      try {
+          mPartLoader.setController(null);
+          mPartLoader.setRoot(null);
+          Parent root = mPartLoader.load();
+          Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+          Scene scene = new Scene(root);
+          stage.setScene(scene);
+          stage.show();
+      }
+      catch (IOException e){
+          GridPane conformation = new GridPane();
+          Text conformationInfo = new Text("No Part was selected");
+          conformationInfo.setFont(new Font(20));
+          conformation.getChildren().add(conformationInfo);
+          GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+          Stage popUp = new Stage();
+          Scene conformationScene = new Scene(conformation);
+          popUp.setTitle("Error");
+          popUp.setScene(conformationScene);
+          popUp.sizeToScene();
+          popUp.show();
+      }
     }
 
     /**
@@ -211,13 +226,28 @@ public class MainMenuController implements Initializable {
      */
     @FXML
     protected void onModifyProductButtonClick(MouseEvent event) throws IOException{
-        mProductLoader.setController(null);
-        mProductLoader.setRoot(null);
-        Parent root = mProductLoader.load();
-        Stage stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        try {
+            mProductLoader.setController(null);
+            mProductLoader.setRoot(null);
+            Parent root = mProductLoader.load();
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        }catch (IOException e){
+            GridPane conformation = new GridPane();
+            Text conformationInfo = new Text("No Product was selected");
+            conformationInfo.setFont(new Font(20));
+            conformation.getChildren().add(conformationInfo);
+            GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+            Stage popUp = new Stage();
+            Scene conformationScene = new Scene(conformation);
+            popUp.setTitle("Error");
+            popUp.setScene(conformationScene);
+            popUp.sizeToScene();
+            popUp.show();
+        }
     }
 
     /**
@@ -247,78 +277,89 @@ public class MainMenuController implements Initializable {
      */
     @FXML
     protected void deleteSelectedPart(){
+        try {
         ModifyPartController modifyPartGateWay = new ModifyPartController(getAllParts().indexOf(allPartsTable.getSelectionModel().getSelectedItem()), allPartsTable.getSelectionModel().getSelectedItem().getName());
-        if (allPartsTable.getSelectionModel().getSelectedItem() != null) {
-            if(allPartsTable.getItems().size() > 1){
-                if(allPartsTable.getSelectionModel().getSelectedItem() != null && allPartsTable.getSelectionModel().getSelectedItem().getName().equals(modifyPartGateWay.lookupInHousePart(getAllParts().indexOf(allPartsTable.getSelectionModel().getSelectedItem())).getName())){
-                    deletePart(allPartsTable.getSelectionModel().getSelectedItem());
-                    inHouseParts.remove(modifyPartGateWay.inHouseTest(modifyPartGateWay.lookupInHousePart(allPartsTable.getSelectionModel().getSelectedItem().getName())));
-                    for(InHouse selectedInHousePart : inHouseParts){
-                        InHouse inHousePartToUpdate = modifyPartGateWay.lookupInHousePart(inHouseParts.indexOf(selectedInHousePart));
-                        inHousePartToUpdate.setId(inHouseParts.indexOf(selectedInHousePart) + 1);
+            if (allPartsTable.getSelectionModel().getSelectedItem() != null) {
+                if (allPartsTable.getItems().size() > 1) {
+                    if (allPartsTable.getSelectionModel().getSelectedItem() != null && allPartsTable.getSelectionModel().getSelectedItem().getName().equals(modifyPartGateWay.lookupInHousePart(getAllParts().indexOf(allPartsTable.getSelectionModel().getSelectedItem())).getName())) {
+                        deletePart(allPartsTable.getSelectionModel().getSelectedItem());
+                        inHouseParts.remove(modifyPartGateWay.inHouseTest(modifyPartGateWay.lookupInHousePart(allPartsTable.getSelectionModel().getSelectedItem().getName())));
+                        for (InHouse selectedInHousePart : inHouseParts) {
+                            InHouse inHousePartToUpdate = modifyPartGateWay.lookupInHousePart(inHouseParts.indexOf(selectedInHousePart));
+                            inHousePartToUpdate.setId(inHouseParts.indexOf(selectedInHousePart) + 1);
 
-                        modifyPartGateWay.updateInHousePart(inHouseParts.indexOf(selectedInHousePart), inHousePartToUpdate);
-                        System.out.println(inHousePartToUpdate.getId() + " " + inHousePartToUpdate.getName());
-                    }
-                    for(Part selectedPart : getAllParts()) {
-                        Part partToUpdate = lookupPart(getAllParts().indexOf(selectedPart));
-                        partToUpdate.setId(getAllParts().indexOf(selectedPart) + 1 );
+                            modifyPartGateWay.updateInHousePart(inHouseParts.indexOf(selectedInHousePart), inHousePartToUpdate);
+                            System.out.println(inHousePartToUpdate.getId() + " " + inHousePartToUpdate.getName());
+                        }
+                        for (Part selectedPart : getAllParts()) {
+                            Part partToUpdate = lookupPart(getAllParts().indexOf(selectedPart));
+                            partToUpdate.setId(getAllParts().indexOf(selectedPart) + 1);
 
-                        updatePart(getAllParts().indexOf(selectedPart), partToUpdate);
-                        allPartsTable.setItems(getAllParts());
-                    }
+                            updatePart(getAllParts().indexOf(selectedPart), partToUpdate);
+                            allPartsTable.setItems(getAllParts());
+                        }
 //                    System.out.println("InHouse Parts Updated");
-                }
-                else if (allPartsTable.getSelectionModel().getSelectedItem() != null && allPartsTable.getSelectionModel().getSelectedItem().getName().equals(modifyPartGateWay.lookupOutsourcedPart(getAllParts().indexOf(allPartsTable.getSelectionModel().getSelectedItem())).getName())){
-                    deletePart(allPartsTable.getSelectionModel().getSelectedItem());
-                    outsourcedParts.remove(modifyPartGateWay.outsourcedTest(modifyPartGateWay.lookupOutsourcedPart(allPartsTable.getSelectionModel().getSelectedItem().getName())));
-                    for(Outsourced selectedInHousePart : outsourcedParts){
-                        Outsourced outsourcedPartToUpdate = modifyPartGateWay.lookupOutsourcedPart(outsourcedParts.indexOf(selectedInHousePart));
-                        outsourcedPartToUpdate.setId(outsourcedParts.indexOf(selectedInHousePart) + 1);
+                    } else if (allPartsTable.getSelectionModel().getSelectedItem() != null && allPartsTable.getSelectionModel().getSelectedItem().getName().equals(modifyPartGateWay.lookupOutsourcedPart(getAllParts().indexOf(allPartsTable.getSelectionModel().getSelectedItem())).getName())) {
+                        deletePart(allPartsTable.getSelectionModel().getSelectedItem());
+                        outsourcedParts.remove(modifyPartGateWay.outsourcedTest(modifyPartGateWay.lookupOutsourcedPart(allPartsTable.getSelectionModel().getSelectedItem().getName())));
+                        for (Outsourced selectedInHousePart : outsourcedParts) {
+                            Outsourced outsourcedPartToUpdate = modifyPartGateWay.lookupOutsourcedPart(outsourcedParts.indexOf(selectedInHousePart));
+                            outsourcedPartToUpdate.setId(outsourcedParts.indexOf(selectedInHousePart) + 1);
 
-                        modifyPartGateWay.updateOutsourcedPart(outsourcedParts.indexOf(selectedInHousePart), outsourcedPartToUpdate);
-                    }
-                    for(Part selectedPart : getAllParts()) {
-                        Part partToUpdate = lookupPart(getAllParts().indexOf(selectedPart));
-                        partToUpdate.setId(getAllParts().indexOf(selectedPart) + 1 );
+                            modifyPartGateWay.updateOutsourcedPart(outsourcedParts.indexOf(selectedInHousePart), outsourcedPartToUpdate);
+                        }
+                        for (Part selectedPart : getAllParts()) {
+                            Part partToUpdate = lookupPart(getAllParts().indexOf(selectedPart));
+                            partToUpdate.setId(getAllParts().indexOf(selectedPart) + 1);
 
-                        updatePart(getAllParts().indexOf(selectedPart), partToUpdate);
-                        allPartsTable.setItems(getAllParts());
-                    }
+                            updatePart(getAllParts().indexOf(selectedPart), partToUpdate);
+                            allPartsTable.setItems(getAllParts());
+                        }
 //                    System.out.println("Outsourced Parts Updated");
+                    } else {
+                        System.out.println("Nothing Called");
+                    }
+                } else {
+                    deletePart(allPartsTable.getSelectionModel().getSelectedItem());
                 }
-                else{
-                    System.out.println("Nothing Called");
-                }
-            }
-            else{
-                deletePart(allPartsTable.getSelectionModel().getSelectedItem());
-            }
 
-            allPartsTable.setItems(getAllParts());
+                allPartsTable.setItems(getAllParts());
 
+                GridPane conformation = new GridPane();
+                Text conformationInfo = new Text("Part Successfully Removed");
+                conformationInfo.setFont(new Font(20));
+                conformation.getChildren().add(conformationInfo);
+                GridPane.setConstraints(conformationInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
+                Stage popUp = new Stage();
+                Scene conformationScene = new Scene(conformation);
+                popUp.setTitle("System Message");
+                popUp.setScene(conformationScene);
+                popUp.sizeToScene();
+                popUp.show();
+
+            } else {
+                GridPane conformation = new GridPane();
+                Text conformationInfo = new Text("Part Deletion Unsuccessful");
+                conformationInfo.setFont(new Font(20));
+                conformation.getChildren().add(conformationInfo);
+                GridPane.setConstraints(conformationInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
+                Stage popUp = new Stage();
+                Scene conformationScene = new Scene(conformation);
+                popUp.setTitle("System Message");
+                popUp.setScene(conformationScene);
+                popUp.sizeToScene();
+                popUp.show();
+            }
+        }catch (Exception e){
             GridPane conformation = new GridPane();
-            Text conformationInfo = new Text("Part Successfully Removed");
+            Text conformationInfo = new Text("No Part was selected");
             conformationInfo.setFont(new Font(20));
             conformation.getChildren().add(conformationInfo);
             GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
-            Stage popUp = new Stage();
-            Scene conformationScene = new Scene(conformation);
-            popUp.setTitle("System Message");
-            popUp.setScene(conformationScene);
-            popUp.sizeToScene();
-            popUp.show();
 
-        }
-        else{
-            GridPane conformation = new GridPane();
-            Text conformationInfo = new Text("Part Deletion Unsuccessful");
-            conformationInfo.setFont(new Font(20));
-            conformation.getChildren().add(conformationInfo);
-            GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER, Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
             Stage popUp = new Stage();
             Scene conformationScene = new Scene(conformation);
-            popUp.setTitle("System Message");
+            popUp.setTitle("Error");
             popUp.setScene(conformationScene);
             popUp.sizeToScene();
             popUp.show();
@@ -330,22 +371,36 @@ public class MainMenuController implements Initializable {
      */
     @FXML
     protected void deleteSelectedProduct(){
-        if (allProductsTable.getSelectionModel().getSelectedItem() != null) {
-            if(getAllProducts().size() > 1){
-                deleteProduct(allProductsTable.getSelectionModel().getSelectedItem());
-                for(Product selectedProduct : getAllProducts()) {
-                    Product productToUpdate = lookupProduct(getAllProducts().indexOf(selectedProduct));
-                    productToUpdate.setId(getAllProducts().indexOf(selectedProduct) + 1 );
+        try {
+            if (allProductsTable.getSelectionModel().getSelectedItem() != null) {
+                if (getAllProducts().size() > 1) {
+                    deleteProduct(allProductsTable.getSelectionModel().getSelectedItem());
+                    for (Product selectedProduct : getAllProducts()) {
+                        Product productToUpdate = lookupProduct(getAllProducts().indexOf(selectedProduct));
+                        productToUpdate.setId(getAllProducts().indexOf(selectedProduct) + 1);
 
-                    updateProduct(getAllProducts().indexOf(selectedProduct), productToUpdate);
+                        updateProduct(getAllProducts().indexOf(selectedProduct), productToUpdate);
+                        allProductsTable.setItems(getAllProducts());
+                    }
+                } else {
+                    deleteProduct(allProductsTable.getSelectionModel().getSelectedItem());
                     allProductsTable.setItems(getAllProducts());
                 }
-            }
-            else{
-                deleteProduct(allProductsTable.getSelectionModel().getSelectedItem());
-                allProductsTable.setItems(getAllProducts());
-            }
 
+            }
+        }catch (Exception e){
+            GridPane conformation = new GridPane();
+            Text conformationInfo = new Text("No Product was selected");
+            conformationInfo.setFont(new Font(20));
+            conformation.getChildren().add(conformationInfo);
+            GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+            Stage popUp = new Stage();
+            Scene conformationScene = new Scene(conformation);
+            popUp.setTitle("Error");
+            popUp.setScene(conformationScene);
+            popUp.sizeToScene();
+            popUp.show();
         }
     }
 

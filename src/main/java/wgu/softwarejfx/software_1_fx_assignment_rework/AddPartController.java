@@ -79,6 +79,7 @@ public class AddPartController implements Initializable {
      */
     @FXML
     protected void onSaveNewPartButtonClick(MouseEvent event) throws IOException {
+        try{
         if (newInHousePartButton.isSelected()){
             if(newPartName.getText().isEmpty() || newPartPrice.getText().isEmpty()
                     || newPartStock.getText().isEmpty() || newPartMax.getText().isEmpty()
@@ -116,10 +117,7 @@ public class AddPartController implements Initializable {
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
                 errorInfo.setFont(new Font(20));
-                Button errorInfoCloseButton = new Button("Close");
                 error.getChildren().add(errorInfo);
-                error.getChildren().add(errorInfoCloseButton);
-                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER,VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
                 Stage popUp = new Stage();
@@ -142,17 +140,14 @@ public class AddPartController implements Initializable {
                     || newPartMin.getText().isEmpty() || newPartMachineInfoTextField.getText().isEmpty()){
 
                 GridPane conformation = new GridPane();
-                Text conformationInfo = new Text("Part Successfully Removed");
+                Text conformationInfo = new Text("One or More Part Field(s) left Empty");
                 conformationInfo.setFont(new Font(20));
-                Button errorInfoCloseButton = new Button("Close");
                 conformation.getChildren().add(conformationInfo);
-                conformation.getChildren().add(errorInfoCloseButton);
-                GridPane.setConstraints(errorInfoCloseButton,0,1,1,1,CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS,new Insets(10));
                 GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
                 Stage popUp = new Stage();
                 Scene conformationScene = new Scene(conformation);
-                popUp.setTitle("Conformation");
+                popUp.setTitle("Error");
                 popUp.setScene(conformationScene);
                 popUp.sizeToScene();
                 popUp.show();
@@ -172,7 +167,7 @@ public class AddPartController implements Initializable {
                 popUp.show();
             }
 
-            else if(Integer.parseInt(newPartStock.getText()) > Integer.parseInt(newPartMax.getText()) || Integer.parseInt(newPartStock.getText()) < Integer.parseInt(newPartMin.getText())){
+            else if((Integer.parseInt(newPartStock.getText()) >= Integer.parseInt(newPartMax.getText())) || (Integer.parseInt(newPartStock.getText()) <= Integer.parseInt(newPartMin.getText()))){
                 GridPane error = new GridPane();
                 Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
                 errorInfo.setFont(new Font(20));
@@ -192,7 +187,21 @@ public class AddPartController implements Initializable {
                 saveNewPart(event);
             }
         }
+        }
+        catch(NumberFormatException e){
+            GridPane conformation = new GridPane();
+            Text conformationInfo = new Text("One or More Product Field(s) has a non-numerical value and must be changed to a numerical one");
+            conformationInfo.setFont(new Font(20));
+            conformation.getChildren().add(conformationInfo);
+            GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
 
+            Stage popUp = new Stage();
+            Scene conformationScene = new Scene(conformation);
+            popUp.setTitle("Error");
+            popUp.setScene(conformationScene);
+            popUp.sizeToScene();
+            popUp.show();
+        }
     }
 
 

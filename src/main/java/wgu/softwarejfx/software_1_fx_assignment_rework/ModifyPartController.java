@@ -247,61 +247,74 @@ public class ModifyPartController implements Initializable {
      */
     @FXML
     protected void onSaveModifiedPartButtonClick(MouseEvent event) throws IOException {
-        if (modifiedInHousePartButton.isSelected()){
-            if(modifiedPartName.getText().isEmpty() || modifiedPartPrice.getText().isEmpty()
-                    || modifiedPartStock.getText().isEmpty() || modifiedPartMax.getText().isEmpty()
-                    || modifiedPartMin.getText().isEmpty() || modifiedPartMachineInfoTextField.getText().isEmpty()){
+        try {
+            if (modifiedInHousePartButton.isSelected()) {
+                if (modifiedPartName.getText().isEmpty() || modifiedPartPrice.getText().isEmpty()
+                        || modifiedPartStock.getText().isEmpty() || modifiedPartMax.getText().isEmpty()
+                        || modifiedPartMin.getText().isEmpty() || modifiedPartMachineInfoTextField.getText().isEmpty()) {
 
-                GridPane conformation = new GridPane();
-                Text conformationInfo = new Text("One or More Part Field(s) left Empty");
-                conformationInfo.setFont(new Font(20));
-                conformation.getChildren().add(conformationInfo);
-                GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
-                Stage popUp = new Stage();
-                Scene conformationScene = new Scene(conformation);
-                popUp.setTitle("Error");
-                popUp.setScene(conformationScene);
-                popUp.sizeToScene();
-                popUp.show();
-            }
-            if(Integer.parseInt(modifiedPartMin.getText()) > Integer.parseInt(modifiedPartMax.getText())){
-                GridPane error = new GridPane();
-                Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
-                errorInfo.setFont(new Font(20));
-                error.getChildren().add(errorInfo);
-                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
-                Stage popUp = new Stage();
-                Scene errorScene = new Scene(error);
-                popUp.setTitle("Error");
-                popUp.setScene(errorScene);
-                popUp.sizeToScene();
-                popUp.show();
-            }
+                    GridPane conformation = new GridPane();
+                    Text conformationInfo = new Text("One or More Part Field(s) left Empty");
+                    conformationInfo.setFont(new Font(20));
+                    conformation.getChildren().add(conformationInfo);
+                    GridPane.setConstraints(conformationInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
+                    Stage popUp = new Stage();
+                    Scene conformationScene = new Scene(conformation);
+                    popUp.setTitle("Error");
+                    popUp.setScene(conformationScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+                if (Integer.parseInt(modifiedPartMin.getText()) > Integer.parseInt(modifiedPartMax.getText())) {
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Min & Max Error: Max should be greater then Min");
+                    errorInfo.setFont(new Font(20));
+                    error.getChildren().add(errorInfo);
+                    GridPane.setConstraints(errorInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                } else if (Integer.parseInt(modifiedPartStock.getText()) > Integer.parseInt(modifiedPartMax.getText()) || Integer.parseInt(modifiedPartStock.getText()) < Integer.parseInt(modifiedPartMin.getText())) {
+                    GridPane error = new GridPane();
+                    Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
+                    errorInfo.setFont(new Font(20));
+                    error.getChildren().add(errorInfo);
+                    GridPane.setConstraints(errorInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
+                    Stage popUp = new Stage();
+                    Scene errorScene = new Scene(error);
+                    popUp.setTitle("Error");
+                    popUp.setScene(errorScene);
+                    popUp.sizeToScene();
+                    popUp.show();
 
-            else if(Integer.parseInt(modifiedPartStock.getText()) > Integer.parseInt(modifiedPartMax.getText()) || Integer.parseInt(modifiedPartStock.getText()) < Integer.parseInt(modifiedPartMin.getText())){
-                GridPane error = new GridPane();
-                Text errorInfo = new Text("Stock Error: Stock must be between Min & Max");
-                errorInfo.setFont(new Font(20));
-                error.getChildren().add(errorInfo);
-                GridPane.setConstraints(errorInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
-                Stage popUp = new Stage();
-                Scene errorScene = new Scene(error);
-                popUp.setTitle("Error");
-                popUp.setScene(errorScene);
-                popUp.sizeToScene();
-                popUp.show();
+                } else if (!modifiedPartName.getText().isEmpty() && Double.parseDouble(modifiedPartPrice.getText()) != 0 && Integer.parseInt(modifiedPartMax.getText()) != 0) {
+                    saveModifiedInHousePart();
+                    saveModifiedPart(event);
 
-            }
-
-            else if(!modifiedPartName.getText().isEmpty() && Double.parseDouble(modifiedPartPrice.getText()) != 0 && Integer.parseInt(modifiedPartMax.getText()) != 0) {
-                saveModifiedInHousePart();
+                    GridPane conformation = new GridPane();
+                    Text conformationInfo = new Text("Part Successfully Modified");
+                    conformationInfo.setFont(new Font(20));
+                    conformation.getChildren().add(conformationInfo);
+                    GridPane.setConstraints(conformationInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
+                    Stage popUp = new Stage();
+                    Scene conformationScene = new Scene(conformation);
+                    popUp.setTitle("Conformation");
+                    popUp.setScene(conformationScene);
+                    popUp.sizeToScene();
+                    popUp.show();
+                }
+            } else if (modifiedOutsourcedPartButton.isSelected()) {
+                saveModifiedOutsourcedPart();
                 saveModifiedPart(event);
 
                 GridPane conformation = new GridPane();
                 Text conformationInfo = new Text("Part Successfully Modified");
                 conformationInfo.setFont(new Font(20));
                 conformation.getChildren().add(conformationInfo);
-                GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+                GridPane.setConstraints(conformationInfo, 0, 0, 1, 1, CENTER, VPos.CENTER, Priority.ALWAYS, Priority.ALWAYS, new Insets(25));
                 Stage popUp = new Stage();
                 Scene conformationScene = new Scene(conformation);
                 popUp.setTitle("Conformation");
@@ -309,25 +322,20 @@ public class ModifyPartController implements Initializable {
                 popUp.sizeToScene();
                 popUp.show();
             }
-        }
-        else if (modifiedOutsourcedPartButton.isSelected()){
-            saveModifiedOutsourcedPart();
-            saveModifiedPart(event);
-
+        }catch(NumberFormatException e){
             GridPane conformation = new GridPane();
-            Text conformationInfo = new Text("Part Successfully Modified");
+            Text conformationInfo = new Text("One or More Part Field(s) has a non-numerical value and must be changed to a numerical one");
             conformationInfo.setFont(new Font(20));
             conformation.getChildren().add(conformationInfo);
             GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
             Stage popUp = new Stage();
             Scene conformationScene = new Scene(conformation);
-            popUp.setTitle("Conformation");
+            popUp.setTitle("Error");
             popUp.setScene(conformationScene);
             popUp.sizeToScene();
             popUp.show();
-
         }
-
     }
 
     /**

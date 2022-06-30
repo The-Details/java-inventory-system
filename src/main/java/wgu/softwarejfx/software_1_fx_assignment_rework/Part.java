@@ -1,5 +1,8 @@
 package wgu.softwarejfx.software_1_fx_assignment_rework;
 
+/**
+ * FUTURE ENHANCEMENT: Adding more granularity to the class, allowing it to process more things
+ */
 public abstract class Part {
     private int id;
     private String name;

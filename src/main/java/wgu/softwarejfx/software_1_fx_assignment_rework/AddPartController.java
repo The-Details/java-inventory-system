@@ -193,6 +193,22 @@ public class AddPartController implements Initializable {
                 saveNewPart(event);
             }
         }
+        else {
+            GridPane conformation = new GridPane();
+            Text conformationInfo = new Text("No Part Type has been selected");
+            conformationInfo.setFont(new Font(20));
+            conformation.getChildren().add(conformationInfo);
+            GridPane.setConstraints(conformationInfo, 0,0,1,1,CENTER, VPos.CENTER,Priority.ALWAYS,Priority.ALWAYS, new Insets(25));
+
+            Stage popUp = new Stage();
+            Scene conformationScene = new Scene(conformation);
+            popUp.setTitle("Error");
+            popUp.setScene(conformationScene);
+            popUp.sizeToScene();
+            popUp.show();
+
+
+        }
         }
         catch(NumberFormatException e){
             GridPane conformation = new GridPane();

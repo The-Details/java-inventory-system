@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static wgu.softwarejfx.software_1_fx_assignment_rework.TestZone.testMethod;
+
 
 /**
  * The java doc folder can be found at this path:  'src/main/resources.
@@ -218,5 +220,6 @@ public class Inventory extends Application {
      */
     public static void main(String[] args) {
         launch();
+//        testMethod();
     }
 }

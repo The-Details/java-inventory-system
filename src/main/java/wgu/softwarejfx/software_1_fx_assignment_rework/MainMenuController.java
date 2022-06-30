@@ -198,7 +198,7 @@ public class MainMenuController implements Initializable {
      * This method changes the scene from the Main Menu scene to the Modify Part scene.
      */
     @FXML
-    protected void onModifyPartButtonClick(MouseEvent event){
+    public void onModifyPartButtonClick(MouseEvent event){
       try {
           mPartLoader.setController(null);
           mPartLoader.setRoot(null);
@@ -221,6 +221,8 @@ public class MainMenuController implements Initializable {
           popUp.setScene(conformationScene);
           popUp.sizeToScene();
           popUp.show();
+
+          e.printStackTrace();
       }
     }
 

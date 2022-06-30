@@ -196,33 +196,41 @@ public class ModifyPartController implements Initializable {
      * This method is responsible for the setting up of Modify Part Menu in the event the all parts collections is not null and a part is selected for modification.
      */
     protected void modifiedPartTextFieldSetup(){
+        int n = 0;
         if (!getAllParts().isEmpty()) {
             int selectedPart = partIndex;
-                if (!lookupInHousePart(partName).isEmpty()) {
+                if (getAllParts().get(partIndex) instanceof InHouse) {
+//                    if(lookupInHousePart(partName).size() > 1){
+//                        n = lookupInHousePart(partName).size() - 1;
+//                    }
+                    modifiedPartMachineInfoLabel.setText("Machine ID");
                     modifiedInHousePartButton.setSelected(true);
                     modifiedOutsourcedPartButton.setSelected(false);
-                    modifiedPartId.setPromptText(String.valueOf(lookupInHousePart(partName).get(0).getId()));
+                    modifiedPartId.setPromptText(String.valueOf(lookupInHousePart(partName).get(n).getId()));
                     modifiedPartId.setDisable(true);
                     modifiedPartId.setEditable(false);
-                    modifiedPartName.setText(lookupInHousePart(partName).get(0).getName());
-                    modifiedPartPrice.setText(String.valueOf(lookupInHousePart(partName).get(0).getPrice()));
-                    modifiedPartStock.setText(String.valueOf(lookupInHousePart(partName).get(0).getStock()));
-                    modifiedPartMin.setText(String.valueOf(lookupInHousePart(partName).get(0).getMin()));
-                    modifiedPartMax.setText(String.valueOf(lookupInHousePart(partName).get(0).getMax()));
-                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupInHousePart(partName).get(0).getMachineId()));
-                } else if (!lookupOutsourcedPart(partName).isEmpty()) {
+                    modifiedPartName.setText(lookupInHousePart(partName).get(n).getName());
+                    modifiedPartPrice.setText(String.valueOf(lookupInHousePart(partName).get(n).getPrice()));
+                    modifiedPartStock.setText(String.valueOf(lookupInHousePart(partName).get(n).getStock()));
+                    modifiedPartMin.setText(String.valueOf(lookupInHousePart(partName).get(n).getMin()));
+                    modifiedPartMax.setText(String.valueOf(lookupInHousePart(partName).get(n).getMax()));
+                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupInHousePart(partName).get(n).getMachineId()));
+                } else if (getAllParts().get(partIndex) instanceof Outsourced) {
+//                    if(lookupOutsourcedPart(partName).size() > 1){
+//                        n = lookupOutsourcedPart(partName).size() - 1;
+//                    }
                     modifiedPartMachineInfoLabel.setText("Company Name");
                     modifiedInHousePartButton.setSelected(false);
                     modifiedOutsourcedPartButton.setSelected(true);
-                    modifiedPartId.setPromptText(String.valueOf(lookupOutsourcedPart(partName).get(0).getId()));
+                    modifiedPartId.setPromptText(String.valueOf(lookupOutsourcedPart(partName).get(n).getId()));
                     modifiedPartId.setDisable(true);
                     modifiedPartId.setEditable(false);
-                    modifiedPartName.setText(lookupOutsourcedPart(partName).get(0).getName());
-                    modifiedPartPrice.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getPrice()));
-                    modifiedPartStock.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getStock()));
-                    modifiedPartMin.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getMin()));
-                    modifiedPartMax.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getMax()));
-                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupOutsourcedPart(partName).get(0).getCompanyName()));
+                    modifiedPartName.setText(lookupOutsourcedPart(partName).get(n).getName());
+                    modifiedPartPrice.setText(String.valueOf(lookupOutsourcedPart(partName).get(n).getPrice()));
+                    modifiedPartStock.setText(String.valueOf(lookupOutsourcedPart(partName).get(n).getStock()));
+                    modifiedPartMin.setText(String.valueOf(lookupOutsourcedPart(partName).get(n).getMin()));
+                    modifiedPartMax.setText(String.valueOf(lookupOutsourcedPart(partName).get(n).getMax()));
+                    modifiedPartMachineInfoTextField.setText(String.valueOf(lookupOutsourcedPart(partName).get(n).getCompanyName()));
                 } else {
                     GridPane conformation = new GridPane();
                     Text conformationInfo = new Text("Part not selected");
@@ -252,8 +260,9 @@ public class ModifyPartController implements Initializable {
      */
     @FXML
     protected void onSaveModifiedPartButtonClick(MouseEvent event) throws IOException {
+
         try {
-            if (modifiedInHousePartButton.isSelected()) {
+            if (getAllParts().get(partIndex) instanceof InHouse) {
                 if (modifiedPartName.getText().isEmpty() || modifiedPartPrice.getText().isEmpty()
                         || modifiedPartStock.getText().isEmpty() || modifiedPartMax.getText().isEmpty()
                         || modifiedPartMin.getText().isEmpty() || modifiedPartMachineInfoTextField.getText().isEmpty()) {
@@ -311,7 +320,7 @@ public class ModifyPartController implements Initializable {
                     popUp.sizeToScene();
                     popUp.show();
                 }
-            } else if (modifiedOutsourcedPartButton.isSelected()) {
+            } else if (getAllParts().get(partIndex) instanceof Outsourced) {
                 saveModifiedOutsourcedPart();
                 saveModifiedPart(event);
 
@@ -348,21 +357,52 @@ public class ModifyPartController implements Initializable {
      */
     protected void saveModifiedInHousePart(){
         try {
-            InHouse modifiedInHousePart = new InHouse(0, "name", 0, 0, 0, 0, 0);
-            modifiedInHousePart.setName(modifiedPartName.getText());
-            modifiedInHousePart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
-            modifiedInHousePart.setStock(Integer.parseInt(modifiedPartStock.getText()));
-            modifiedInHousePart.setMax(Integer.parseInt(modifiedPartMax.getText()));
-            modifiedInHousePart.setMin(Integer.parseInt(modifiedPartMin.getText()));
-            modifiedInHousePart.setMachineId(Integer.parseInt(modifiedPartMachineInfoTextField.getText()));
+            InHouse currentInHousePart = null;
+            String inHousePartName = getAllParts().get(partIndex).getName();
+            for (InHouse filter : lookupInHousePart(inHousePartName)) {
+                if ((getAllParts().get(partIndex).getName().equals(filter.getName()))
+                        && (getAllParts().get(partIndex).getPrice() == filter.getPrice())
+                        && (getAllParts().get(partIndex).getStock() == filter.getStock())
+                        && (getAllParts().get(partIndex).getMin() == filter.getMin())
+                        && (getAllParts().get(partIndex).getMax() == filter.getMax())) {
+                    currentInHousePart = filter;
+                }
+            }
 
-            updateInHousePart(inHouseTest(lookupInHousePart(partName)),modifiedInHousePart);
+            if(getAllParts().get(partIndex) instanceof InHouse && modifiedInHousePartButton.isSelected()) {
+                InHouse modifiedInHousePart = new InHouse(0, "name", 0, 0, 0, 0, 0);
+                modifiedInHousePart.setName(modifiedPartName.getText());
+                modifiedInHousePart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
+                modifiedInHousePart.setStock(Integer.parseInt(modifiedPartStock.getText()));
+                modifiedInHousePart.setMax(Integer.parseInt(modifiedPartMax.getText()));
+                modifiedInHousePart.setMin(Integer.parseInt(modifiedPartMin.getText()));
+                modifiedInHousePart.setMachineId(Integer.parseInt(modifiedPartMachineInfoTextField.getText()));
 
-            updatePart(partIndex, modifiedInHousePart);
+                updateInHousePart(inHouseTest(lookupInHousePart(partName)), modifiedInHousePart);
+                updatePart(partIndex, modifiedInHousePart);
+            } else if (getAllParts().get(partIndex) instanceof InHouse && modifiedOutsourcedPartButton.isSelected()) {
+                Outsourced modifiedOutsourcedPart = new Outsourced(0, "name", 0, 0, 0, 0, "company");
+                modifiedOutsourcedPart.setId(getAllParts().indexOf(getAllParts().get(partIndex)) + 1);
+                modifiedOutsourcedPart.setName(modifiedPartName.getText());
+                modifiedOutsourcedPart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
+                modifiedOutsourcedPart.setStock(Integer.parseInt(modifiedPartStock.getText()));
+                modifiedOutsourcedPart.setMax(Integer.parseInt(modifiedPartMax.getText()));
+                modifiedOutsourcedPart.setMin(Integer.parseInt(modifiedPartMin.getText()));
+                modifiedOutsourcedPart.setCompanyName(String.valueOf(modifiedPartMachineInfoTextField.getText()));
+
+                getAllParts().remove(partIndex);
+                inHouseParts.remove(currentInHousePart);
+                getAllParts().add(partIndex, modifiedOutsourcedPart);
+                outsourcedParts.add(modifiedOutsourcedPart);
+
+            }
         }catch (Exception e){
+            e.printStackTrace();
             System.out.println("shit prequel");
         }
     }
+
+
 
     int inHouseTest(ObservableList<InHouse> observableList){
         int inHoT = 0;
@@ -386,17 +426,47 @@ public class ModifyPartController implements Initializable {
      */
     protected void saveModifiedOutsourcedPart(){
         try {
-            Outsourced modifiedOutsourcedPart = new Outsourced(0, "name", 0, 0, 0, 0, "company");
-            modifiedOutsourcedPart.setName(modifiedPartName.getText());
-            modifiedOutsourcedPart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
-            modifiedOutsourcedPart.setStock(Integer.parseInt(modifiedPartStock.getText()));
-            modifiedOutsourcedPart.setMax(Integer.parseInt(modifiedPartMax.getText()));
-            modifiedOutsourcedPart.setMin(Integer.parseInt(modifiedPartMin.getText()));
-            modifiedOutsourcedPart.setCompanyName(modifiedPartMachineInfoTextField.getText());
 
-            updateOutsourcedPart(outsourcedTest(lookupOutsourcedPart(partName)),modifiedOutsourcedPart);
+            Outsourced currentOutsourcedPart = null;
+            String outsourcedPartName = getAllParts().get(partIndex).getName();
+            for (Outsourced filter : lookupOutsourcedPart(outsourcedPartName)) {
+                if ((getAllParts().get(partIndex).getName().equals(filter.getName()))
+                        && (getAllParts().get(partIndex).getPrice() == filter.getPrice())
+                        && (getAllParts().get(partIndex).getStock() == filter.getStock())
+                        && (getAllParts().get(partIndex).getMin() == filter.getMin())
+                        && (getAllParts().get(partIndex).getMax() == filter.getMax())) {
+                    currentOutsourcedPart = filter;
+                }
+            }
 
-            updatePart(partIndex, modifiedOutsourcedPart);
+            if(getAllParts().get(partIndex) instanceof Outsourced && modifiedOutsourcedPartButton.isSelected()) {
+                Outsourced modifiedOutsourcedPart = new Outsourced(0, "name", 0, 0, 0, 0, "company");
+                modifiedOutsourcedPart.setName(modifiedPartName.getText());
+                modifiedOutsourcedPart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
+                modifiedOutsourcedPart.setStock(Integer.parseInt(modifiedPartStock.getText()));
+                modifiedOutsourcedPart.setMax(Integer.parseInt(modifiedPartMax.getText()));
+                modifiedOutsourcedPart.setMin(Integer.parseInt(modifiedPartMin.getText()));
+                modifiedOutsourcedPart.setCompanyName(String.valueOf(modifiedPartMachineInfoTextField.getText()));
+
+                updateOutsourcedPart(outsourcedTest(lookupOutsourcedPart(partName)), modifiedOutsourcedPart);
+                updatePart(partIndex, modifiedOutsourcedPart);
+            }
+            else if(getAllParts().get(partIndex) instanceof Outsourced && modifiedInHousePartButton.isSelected()) {
+                InHouse modifiedInHousePart = new InHouse(0, "name", 0, 0, 0, 0, 0);
+                modifiedInHousePart.setId(getAllParts().indexOf(getAllParts().get(partIndex)) + 1);
+                modifiedInHousePart.setName(modifiedPartName.getText());
+                modifiedInHousePart.setPrice(Double.parseDouble(modifiedPartPrice.getText()));
+                modifiedInHousePart.setStock(Integer.parseInt(modifiedPartStock.getText()));
+                modifiedInHousePart.setMax(Integer.parseInt(modifiedPartMax.getText()));
+                modifiedInHousePart.setMin(Integer.parseInt(modifiedPartMin.getText()));
+                modifiedInHousePart.setMachineId(Integer.parseInt(modifiedPartMachineInfoTextField.getText()));
+
+                getAllParts().remove(partIndex);
+                outsourcedParts.remove(currentOutsourcedPart);
+                getAllParts().add(partIndex, modifiedInHousePart);
+                inHouseParts.add(modifiedInHousePart);
+
+            }
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("shit the sequel");

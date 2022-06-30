@@ -1,5 +1,9 @@
 package wgu.softwarejfx.software_1_fx_assignment_rework;
 
+
+/**
+ * FUTURE ENHANCEMENT: Adding more granularity to the class, allowing it to process more things
+ */
 public class Outsourced extends Part{
 
     private String companyName;
